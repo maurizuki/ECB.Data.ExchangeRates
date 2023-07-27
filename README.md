@@ -1,3 +1,3 @@
-# ECBExchangeRates.Client
+# ECB.Data.ExchangeRates
 
-https://sdw-wsrest.ecb.europa.eu/
+https://data.ecb.europa.eu/help/api/overview
