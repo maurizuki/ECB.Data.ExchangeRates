@@ -1,0 +1,1 @@
+Provides access to the EXR Dataflow (currency exchange rates) of [ECB Data Portal](https://data.ecb.europa.eu) web services.
