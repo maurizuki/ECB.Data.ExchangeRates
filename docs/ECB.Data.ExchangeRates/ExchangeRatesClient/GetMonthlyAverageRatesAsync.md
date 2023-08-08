@@ -3,7 +3,7 @@
 Returns the monthly average exchange rates of a list of currencies for a specific month.
 
 ```csharp
-public async Task<List<ExchangeRate>> GetMonthlyAverageRatesAsync(int month, int year, 
+public Task<List<ExchangeRate>> GetMonthlyAverageRatesAsync(int month, int year, 
     params string[] currencies)
 ```
 
@@ -36,7 +36,7 @@ A task that represents the asynchronous operation. The task result contains the 
 Returns the monthly average exchange rates of a list of currencies for a specific month range.
 
 ```csharp
-public async Task<List<ExchangeRate>> GetMonthlyAverageRatesAsync(int startMonth, int startYear, 
+public Task<List<ExchangeRate>> GetMonthlyAverageRatesAsync(int startMonth, int startYear, 
     int endMonth, int endYear, params string[] currencies)
 ```
 
