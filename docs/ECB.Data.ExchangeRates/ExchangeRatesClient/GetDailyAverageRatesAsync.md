@@ -3,7 +3,7 @@
 Returns the latest available daily average exchange rates of a list of currencies.
 
 ```csharp
-public async Task<List<ExchangeRate>> GetDailyAverageRatesAsync(params string[] currencies)
+public Task<List<ExchangeRate>> GetDailyAverageRatesAsync(params string[] currencies)
 ```
 
 | parameter | description |
@@ -33,7 +33,7 @@ A task that represents the asynchronous operation. The task result contains the 
 Returns the daily average exchange rates of a list of currencies for a specific date.
 
 ```csharp
-public async Task<List<ExchangeRate>> GetDailyAverageRatesAsync(DateTime date, params string[] currencies)
+public Task<List<ExchangeRate>> GetDailyAverageRatesAsync(DateTime date, params string[] currencies)
 ```
 
 | parameter | description |
@@ -64,7 +64,7 @@ A task that represents the asynchronous operation. The task result contains the 
 Returns the daily average exchange rates of a list of currencies for a specific date range.
 
 ```csharp
-public async Task<List<ExchangeRate>> GetDailyAverageRatesAsync(DateTime startDate, DateTime endDate, 
+public Task<List<ExchangeRate>> GetDailyAverageRatesAsync(DateTime startDate, DateTime endDate, 
     params string[] currencies)
 ```
 
