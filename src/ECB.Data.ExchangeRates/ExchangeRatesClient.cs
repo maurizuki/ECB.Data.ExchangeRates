@@ -21,9 +21,6 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
-using System.Globalization;
-using System.Xml.Linq;
-
 namespace ECB.Data.ExchangeRates;
 
 /// <summary>
@@ -32,6 +29,8 @@ namespace ECB.Data.ExchangeRates;
 /// </summary>
 public class ExchangeRatesClient : HttpClient
 {
+	private readonly IExchangeRatesParser _parser;
+
 	/// <summary>
 	///     Initializes a new instance of the ExchangeRatesClient class using a
 	///     HttpClientHandler that is disposed when this instance is disposed.
@@ -69,27 +68,51 @@ public class ExchangeRatesClient : HttpClient
 	/// </param>
 	/// <exception cref="ArgumentNullException">handler is null.</exception>
 	public ExchangeRatesClient(HttpMessageHandler handler, bool disposeHandler)
-		: base(handler, disposeHandler)
+		: this(handler, disposeHandler, new ExchangeRatesParser())
 	{
-		BaseAddress = new Uri("https://data-api.ecb.europa.eu/service/data/EXR/");
 	}
 
-	/// <summary>
-	///     Returns the latest available daily average exchange rates of a list of
-	///     currencies.
-	/// </summary>
-	/// <param name="currencies">
-	///     The list of the required currencies. Leave empty to get all the
-	///     available currencies.
-	/// </param>
-	/// <returns>
-	///     A task that represents the asynchronous operation. The task result contains
-	///     the latest available daily average exchange rates of a list of currencies.
-	/// </returns>
-	/// <exception cref="HttpRequestException">
-	///     The response status code does not indicate success.
-	/// </exception>
-	public async Task<List<ExchangeRate>> GetDailyAverageRatesAsync(params string[] currencies)
+    /// <summary>
+    ///     Initializes a new instance of the ExchangeRatesClient class with the
+    ///     provided handler, and specifies whether that handler should be disposed
+    ///     when this instance is disposed.
+    /// </summary>
+    /// <param name="handler">
+    ///     The HttpMessageHandler responsible for processing the HTTP response
+    ///     messages.
+    /// </param>
+    /// <param name="disposeHandler">
+    ///     true if the inner handler should be disposed of by
+    ///     ExchangeRatesClient.Dispose; false if you intend to reuse the inner
+    ///     handler.
+    /// </param>
+    /// <exception cref="ArgumentNullException">handler is null or parser is null.</exception>
+    public ExchangeRatesClient(
+        HttpMessageHandler handler,
+        bool disposeHandler,
+        IExchangeRatesParser parser)
+        : base(handler, disposeHandler)
+    {
+        _parser = parser ?? throw new ArgumentNullException(nameof(parser));
+        BaseAddress = new Uri("https://data-api.ecb.europa.eu/service/data/EXR/");
+    }
+
+    /// <summary>
+    ///     Returns the latest available daily average exchange rates of a list of
+    ///     currencies.
+    /// </summary>
+    /// <param name="currencies">
+    ///     The list of the required currencies. Leave empty to get all the
+    ///     available currencies.
+    /// </param>
+    /// <returns>
+    ///     A task that represents the asynchronous operation. The task result contains
+    ///     the latest available daily average exchange rates of a list of currencies.
+    /// </returns>
+    /// <exception cref="HttpRequestException">
+    ///     The response status code does not indicate success.
+    /// </exception>
+    public async Task<IEnumerable<ExchangeRate>> GetDailyAverageRatesAsync(params string[] currencies)
 	{
 		return await GetExchangeRatesAsync(
 			string.Format(
@@ -118,7 +141,7 @@ public class ExchangeRatesClient : HttpClient
 	/// <exception cref="HttpRequestException">
 	///     The response status code does not indicate success.
 	/// </exception>
-	public async Task<List<ExchangeRate>> GetDailyAverageRatesAsync(DateTime date, params string[] currencies)
+	public async Task<IEnumerable<ExchangeRate>> GetDailyAverageRatesAsync(DateTime date, params string[] currencies)
 	{
 		return await GetDailyAverageRatesAsync(date, date, currencies);
 	}
@@ -143,7 +166,7 @@ public class ExchangeRatesClient : HttpClient
 	/// <exception cref="HttpRequestException">
 	///     The response status code does not indicate success.
 	/// </exception>
-	public async Task<List<ExchangeRate>> GetDailyAverageRatesAsync(DateTime startDate, DateTime endDate, params string[] currencies)
+	public async Task<IEnumerable<ExchangeRate>> GetDailyAverageRatesAsync(DateTime startDate, DateTime endDate, params string[] currencies)
 	{
 		return await GetExchangeRatesAsync(
 			string.Format(
@@ -173,7 +196,7 @@ public class ExchangeRatesClient : HttpClient
 	/// <exception cref="HttpRequestException">
 	///     The response status code does not indicate success.
 	/// </exception>
-	public async Task<List<ExchangeRate>> GetMonthlyAverageRatesAsync(int month, int year, params string[] currencies)
+	public async Task<IEnumerable<ExchangeRate>> GetMonthlyAverageRatesAsync(int month, int year, params string[] currencies)
 	{
 		return await GetMonthlyAverageRatesAsync(month, year, month, year, currencies);
 	}
@@ -204,7 +227,7 @@ public class ExchangeRatesClient : HttpClient
 	/// <exception cref="HttpRequestException">
 	///     The response status code does not indicate success.
 	/// </exception>
-	public async Task<List<ExchangeRate>> GetMonthlyAverageRatesAsync(int startMonth, int startYear, int endMonth, int endYear, params string[] currencies)
+	public async Task<IEnumerable<ExchangeRate>> GetMonthlyAverageRatesAsync(int startMonth, int startYear, int endMonth, int endYear, params string[] currencies)
 	{
 		return await GetExchangeRatesAsync(
 			string.Format(
@@ -233,7 +256,7 @@ public class ExchangeRatesClient : HttpClient
 	/// <exception cref="HttpRequestException">
 	///     The response status code does not indicate success.
 	/// </exception>
-	public async Task<List<ExchangeRate>> GetAnnualAverageRatesAsync(int year, params string[] currencies)
+	public async Task<IEnumerable<ExchangeRate>> GetAnnualAverageRatesAsync(int year, params string[] currencies)
 	{
 		return await GetAnnualAverageRatesAsync(year, year, currencies);
 	}
@@ -258,7 +281,7 @@ public class ExchangeRatesClient : HttpClient
 	/// <exception cref="HttpRequestException">
 	///     The response status code does not indicate success.
 	/// </exception>
-	public async Task<List<ExchangeRate>> GetAnnualAverageRatesAsync(int startYear, int endYear, params string[] currencies)
+	public async Task<IEnumerable<ExchangeRate>> GetAnnualAverageRatesAsync(int startYear, int endYear, params string[] currencies)
 	{
 		return await GetExchangeRatesAsync(
 			string.Format(
@@ -292,7 +315,7 @@ public class ExchangeRatesClient : HttpClient
 		return $"{year:D4}";
 	}
 
-	private async Task<List<ExchangeRate>> GetExchangeRatesAsync(string requestUri)
+	private async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(string requestUri)
 	{
 		var response = await GetAsync(requestUri);
 
@@ -305,71 +328,6 @@ public class ExchangeRatesClient : HttpClient
 			);
 		}
 
-		return Parse(await response.Content.ReadAsStringAsync());
-	}
-
-	private static List<ExchangeRate> Parse(string xml)
-	{
-		if (string.IsNullOrWhiteSpace(xml)) return new List<ExchangeRate>();
-
-		var document = XDocument.Parse(xml);
-
-		if (document.Root == null) return new List<ExchangeRate>();
-
-		var genericNamespace = document.Root.GetNamespaceOfPrefix("generic");
-
-		if (genericNamespace == null) return new List<ExchangeRate>();
-
-		var seriesKeyValueName = XName.Get("Value", genericNamespace.NamespaceName);
-		var obsName = XName.Get("Obs", genericNamespace.NamespaceName);
-		var obsDimensionName = XName.Get("ObsDimension", genericNamespace.NamespaceName);
-		var obsValueName = XName.Get("ObsValue", genericNamespace.NamespaceName);
-
-		return document.Descendants(XName.Get("Series", genericNamespace.NamespaceName))
-			.Select(
-				a =>
-				{
-					var seriesKeyValues = a.Descendants(seriesKeyValueName)
-						.ToDictionary(
-							b => b.Attribute("id")!.Value,
-							b => b.Attribute("value")?.Value
-						);
-					return new
-					{
-						Frequency =
-							seriesKeyValues.GetValueOrDefault("FREQ"),
-						Currency =
-							seriesKeyValues.GetValueOrDefault("CURRENCY"),
-						CurrencyDenominator =
-							seriesKeyValues.GetValueOrDefault("CURRENCY_DENOM"),
-						ExchangeRateType =
-							seriesKeyValues.GetValueOrDefault("EXR_TYPE"),
-						SeriesVariation =
-							seriesKeyValues.GetValueOrDefault("EXR_SUFFIX"),
-						Obs = a.Descendants(obsName),
-					};
-				}
-			)
-			.SelectMany(
-				a => a.Obs,
-				(a, b) => new ExchangeRate
-				{
-					Frequency = a.Frequency,
-					Currency = a.Currency,
-					CurrencyDenominator = a.CurrencyDenominator,
-					ExchangeRateType = a.ExchangeRateType,
-					SeriesVariation = a.SeriesVariation,
-					TimePeriod = b.Descendants(obsDimensionName)
-						.FirstOrDefault()?.Attribute("value")?.Value,
-					Value = decimal.TryParse(
-						b.Descendants(obsValueName)
-							.FirstOrDefault()?.Attribute("value")?.Value ?? "0",
-						CultureInfo.InvariantCulture,
-						out var value
-					)
-						? value
-						: 0,
-				}
-			).ToList();
+		return _parser.Parse(await response.Content.ReadAsStringAsync());
 	}
 }
