@@ -3,7 +3,8 @@
 Returns the annual average exchange rates of a list of currencies for a specific year.
 
 ```csharp
-public Task<List<ExchangeRate>> GetAnnualAverageRatesAsync(int year, params string[] currencies)
+public Task<IEnumerable<ExchangeRate>> GetAnnualAverageRatesAsync(int year, 
+    params string[] currencies)
 ```
 
 | parameter | description |
@@ -34,7 +35,7 @@ A task that represents the asynchronous operation. The task result contains the 
 Returns the annual average exchange rates of a list of currencies for a specific year range.
 
 ```csharp
-public Task<List<ExchangeRate>> GetAnnualAverageRatesAsync(int startYear, int endYear, 
+public Task<IEnumerable<ExchangeRate>> GetAnnualAverageRatesAsync(int startYear, int endYear, 
     params string[] currencies)
 ```
 

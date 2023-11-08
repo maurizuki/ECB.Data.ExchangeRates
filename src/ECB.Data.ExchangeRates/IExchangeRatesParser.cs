@@ -21,10 +21,19 @@
 // FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 // OTHER DEALINGS IN THE SOFTWARE.
 
-namespace ECB.Data.ExchangeRates
+namespace ECB.Data.ExchangeRates;
+
+/// <summary>
+///     Defines a method to parse the response of an HTTP request to
+///     ECB Data Portal web services.
+/// </summary>
+public interface IExchangeRatesParser
 {
-    public interface IExchangeRatesParser
-    {
-        IEnumerable<ExchangeRate> Parse(string source);
-    }
+	/// <summary>
+	///     Parses the response of an HTTP request to ECB Data
+	///     Portal web services.
+	/// </summary>
+	/// <param name="source">The XML response to parse.</param>
+	/// <returns>The currency exchange rates.</returns>
+	IEnumerable<ExchangeRate> Parse(string source);
 }

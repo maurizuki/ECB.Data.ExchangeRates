@@ -72,47 +72,50 @@ public class ExchangeRatesClient : HttpClient
 	{
 	}
 
-    /// <summary>
-    ///     Initializes a new instance of the ExchangeRatesClient class with the
-    ///     provided handler, and specifies whether that handler should be disposed
-    ///     when this instance is disposed.
-    /// </summary>
-    /// <param name="handler">
-    ///     The HttpMessageHandler responsible for processing the HTTP response
-    ///     messages.
-    /// </param>
-    /// <param name="disposeHandler">
-    ///     true if the inner handler should be disposed of by
-    ///     ExchangeRatesClient.Dispose; false if you intend to reuse the inner
-    ///     handler.
-    /// </param>
-    /// <exception cref="ArgumentNullException">handler is null or parser is null.</exception>
-    public ExchangeRatesClient(
-        HttpMessageHandler handler,
-        bool disposeHandler,
-        IExchangeRatesParser parser)
-        : base(handler, disposeHandler)
-    {
-        _parser = parser ?? throw new ArgumentNullException(nameof(parser));
-        BaseAddress = new Uri("https://data-api.ecb.europa.eu/service/data/EXR/");
-    }
+	/// <summary>
+	///     Initializes a new instance of the ExchangeRatesClient class with the
+	///     provided handler, and specifies whether that handler should be disposed
+	///     when this instance is disposed.
+	/// </summary>
+	/// <param name="handler">
+	///     The HttpMessageHandler responsible for processing the HTTP response
+	///     messages.
+	/// </param>
+	/// <param name="disposeHandler">
+	///     true if the inner handler should be disposed of by
+	///     ExchangeRatesClient.Dispose; false if you intend to reuse the inner
+	///     handler.
+	/// </param>
+	/// <param name="parser">
+	///		A custom parser for the HTTP response content.
+	/// </param>
+	/// <exception cref="ArgumentNullException">handler is null or parser is null.</exception>
+	public ExchangeRatesClient(
+		HttpMessageHandler handler,
+		bool disposeHandler,
+		IExchangeRatesParser parser)
+		: base(handler, disposeHandler)
+	{
+		_parser = parser ?? throw new ArgumentNullException(nameof(parser));
+		BaseAddress = new Uri("https://data-api.ecb.europa.eu/service/data/EXR/");
+	}
 
-    /// <summary>
-    ///     Returns the latest available daily average exchange rates of a list of
-    ///     currencies.
-    /// </summary>
-    /// <param name="currencies">
-    ///     The list of the required currencies. Leave empty to get all the
-    ///     available currencies.
-    /// </param>
-    /// <returns>
-    ///     A task that represents the asynchronous operation. The task result contains
-    ///     the latest available daily average exchange rates of a list of currencies.
-    /// </returns>
-    /// <exception cref="HttpRequestException">
-    ///     The response status code does not indicate success.
-    /// </exception>
-    public async Task<IEnumerable<ExchangeRate>> GetDailyAverageRatesAsync(params string[] currencies)
+	/// <summary>
+	///     Returns the latest available daily average exchange rates of a list of
+	///     currencies.
+	/// </summary>
+	/// <param name="currencies">
+	///     The list of the required currencies. Leave empty to get all the
+	///     available currencies.
+	/// </param>
+	/// <returns>
+	///     A task that represents the asynchronous operation. The task result contains
+	///     the latest available daily average exchange rates of a list of currencies.
+	/// </returns>
+	/// <exception cref="HttpRequestException">
+	///     The response status code does not indicate success.
+	/// </exception>
+	public async Task<IEnumerable<ExchangeRate>> GetDailyAverageRatesAsync(params string[] currencies)
 	{
 		return await GetExchangeRatesAsync(
 			string.Format(

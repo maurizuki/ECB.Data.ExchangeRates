@@ -35,21 +35,21 @@ public class TestResults
 					Content = new StringContent(
 						@"<?xml version=""1.0"" encoding=""UTF-8""?>
 <message:GenericData xmlns:message=""http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message"" xmlns:generic=""http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic"">
-    <message:DataSet>
-        <generic:Series>
-            <generic:SeriesKey>
-                <generic:Value id=""FREQ"" value=""D""/>
-                <generic:Value id=""CURRENCY"" value=""USD""/>
-                <generic:Value id=""CURRENCY_DENOM"" value=""EUR""/>
-                <generic:Value id=""EXR_TYPE"" value=""SP00""/>
-                <generic:Value id=""EXR_SUFFIX"" value=""A""/>
-            </generic:SeriesKey>
-            <generic:Obs>
-                <generic:ObsDimension value=""2002-01-02""/>
-                <generic:ObsValue value=""0.9038""/>
-            </generic:Obs>
-        </generic:Series>
-    </message:DataSet>
+	<message:DataSet>
+		<generic:Series>
+			<generic:SeriesKey>
+				<generic:Value id=""FREQ"" value=""D""/>
+				<generic:Value id=""CURRENCY"" value=""USD""/>
+				<generic:Value id=""CURRENCY_DENOM"" value=""EUR""/>
+				<generic:Value id=""EXR_TYPE"" value=""SP00""/>
+				<generic:Value id=""EXR_SUFFIX"" value=""A""/>
+			</generic:SeriesKey>
+			<generic:Obs>
+				<generic:ObsDimension value=""2002-01-02""/>
+				<generic:ObsValue value=""0.9038""/>
+			</generic:Obs>
+		</generic:Series>
+	</message:DataSet>
 </message:GenericData>"
 					),
 				}
@@ -83,25 +83,25 @@ public class TestResults
 					Content = new StringContent(
 						@"<?xml version=""1.0"" encoding=""UTF-8""?>
 <message:GenericData xmlns:message=""http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message"" xmlns:generic=""http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic"">
-    <message:DataSet>
-        <generic:Series>
-            <generic:SeriesKey>
-                <generic:Value id=""FREQ"" value=""D""/>
-                <generic:Value id=""CURRENCY"" value=""USD""/>
-                <generic:Value id=""CURRENCY_DENOM"" value=""EUR""/>
-                <generic:Value id=""EXR_TYPE"" value=""SP00""/>
-                <generic:Value id=""EXR_SUFFIX"" value=""A""/>
-            </generic:SeriesKey>
-            <generic:Obs>
-                <generic:ObsDimension value=""2002-01-02""/>
-                <generic:ObsValue value=""0.9038""/>
-            </generic:Obs>
-            <generic:Obs>
-                <generic:ObsDimension value=""2002-01-03""/>
-                <generic:ObsValue value=""0.9036""/>
-            </generic:Obs>
-        </generic:Series>
-    </message:DataSet>
+	<message:DataSet>
+		<generic:Series>
+			<generic:SeriesKey>
+				<generic:Value id=""FREQ"" value=""D""/>
+				<generic:Value id=""CURRENCY"" value=""USD""/>
+				<generic:Value id=""CURRENCY_DENOM"" value=""EUR""/>
+				<generic:Value id=""EXR_TYPE"" value=""SP00""/>
+				<generic:Value id=""EXR_SUFFIX"" value=""A""/>
+			</generic:SeriesKey>
+			<generic:Obs>
+				<generic:ObsDimension value=""2002-01-02""/>
+				<generic:ObsValue value=""0.9038""/>
+			</generic:Obs>
+			<generic:Obs>
+				<generic:ObsDimension value=""2002-01-03""/>
+				<generic:ObsValue value=""0.9036""/>
+			</generic:Obs>
+		</generic:Series>
+	</message:DataSet>
 </message:GenericData>"
 					),
 				}
@@ -145,34 +145,34 @@ public class TestResults
 					Content = new StringContent(
 						@"<?xml version=""1.0"" encoding=""UTF-8""?>
 <message:GenericData xmlns:message=""http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message"" xmlns:generic=""http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic"">
-    <message:DataSet>
-        <generic:Series>
-            <generic:SeriesKey>
-                <generic:Value id=""FREQ"" value=""D""/>
-                <generic:Value id=""CURRENCY"" value=""GBP""/>
-                <generic:Value id=""CURRENCY_DENOM"" value=""EUR""/>
-                <generic:Value id=""EXR_TYPE"" value=""SP00""/>
-                <generic:Value id=""EXR_SUFFIX"" value=""A""/>
-            </generic:SeriesKey>
-            <generic:Obs>
-                <generic:ObsDimension value=""2002-01-02""/>
-                <generic:ObsValue value=""0.6262""/>
-            </generic:Obs>
-        </generic:Series>
-        <generic:Series>
-            <generic:SeriesKey>
-                <generic:Value id=""FREQ"" value=""D""/>
-                <generic:Value id=""CURRENCY"" value=""USD""/>
-                <generic:Value id=""CURRENCY_DENOM"" value=""EUR""/>
-                <generic:Value id=""EXR_TYPE"" value=""SP00""/>
-                <generic:Value id=""EXR_SUFFIX"" value=""A""/>
-            </generic:SeriesKey>
-            <generic:Obs>
-                <generic:ObsDimension value=""2002-01-02""/>
-                <generic:ObsValue value=""0.9038""/>
-            </generic:Obs>
-        </generic:Series>
-    </message:DataSet>
+	<message:DataSet>
+		<generic:Series>
+			<generic:SeriesKey>
+				<generic:Value id=""FREQ"" value=""D""/>
+				<generic:Value id=""CURRENCY"" value=""GBP""/>
+				<generic:Value id=""CURRENCY_DENOM"" value=""EUR""/>
+				<generic:Value id=""EXR_TYPE"" value=""SP00""/>
+				<generic:Value id=""EXR_SUFFIX"" value=""A""/>
+			</generic:SeriesKey>
+			<generic:Obs>
+				<generic:ObsDimension value=""2002-01-02""/>
+				<generic:ObsValue value=""0.6262""/>
+			</generic:Obs>
+		</generic:Series>
+		<generic:Series>
+			<generic:SeriesKey>
+				<generic:Value id=""FREQ"" value=""D""/>
+				<generic:Value id=""CURRENCY"" value=""USD""/>
+				<generic:Value id=""CURRENCY_DENOM"" value=""EUR""/>
+				<generic:Value id=""EXR_TYPE"" value=""SP00""/>
+				<generic:Value id=""EXR_SUFFIX"" value=""A""/>
+			</generic:SeriesKey>
+			<generic:Obs>
+				<generic:ObsDimension value=""2002-01-02""/>
+				<generic:ObsValue value=""0.9038""/>
+			</generic:Obs>
+		</generic:Series>
+	</message:DataSet>
 </message:GenericData>"
 					),
 				}
@@ -216,42 +216,42 @@ public class TestResults
 					Content = new StringContent(
 						@"<?xml version=""1.0"" encoding=""UTF-8""?>
 <message:GenericData xmlns:message=""http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message"" xmlns:generic=""http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic"">
-    <message:DataSet>
-        <generic:Series>
-            <generic:SeriesKey>
-                <generic:Value id=""FREQ"" value=""D""/>
-                <generic:Value id=""CURRENCY"" value=""GBP""/>
-                <generic:Value id=""CURRENCY_DENOM"" value=""EUR""/>
-                <generic:Value id=""EXR_TYPE"" value=""SP00""/>
-                <generic:Value id=""EXR_SUFFIX"" value=""A""/>
-            </generic:SeriesKey>
-            <generic:Obs>
-                <generic:ObsDimension value=""2002-01-02""/>
-                <generic:ObsValue value=""0.6262""/>
-            </generic:Obs>
-            <generic:Obs>
-                <generic:ObsDimension value=""2002-01-03""/>
-                <generic:ObsValue value=""0.6254""/>
-            </generic:Obs>
-        </generic:Series>
-        <generic:Series>
-            <generic:SeriesKey>
-                <generic:Value id=""FREQ"" value=""D""/>
-                <generic:Value id=""CURRENCY"" value=""USD""/>
-                <generic:Value id=""CURRENCY_DENOM"" value=""EUR""/>
-                <generic:Value id=""EXR_TYPE"" value=""SP00""/>
-                <generic:Value id=""EXR_SUFFIX"" value=""A""/>
-            </generic:SeriesKey>
-            <generic:Obs>
-                <generic:ObsDimension value=""2002-01-02""/>
-                <generic:ObsValue value=""0.9038""/>
-            </generic:Obs>
-            <generic:Obs>
-                <generic:ObsDimension value=""2002-01-03""/>
-                <generic:ObsValue value=""0.9036""/>
-            </generic:Obs>
-        </generic:Series>
-    </message:DataSet>
+	<message:DataSet>
+		<generic:Series>
+			<generic:SeriesKey>
+				<generic:Value id=""FREQ"" value=""D""/>
+				<generic:Value id=""CURRENCY"" value=""GBP""/>
+				<generic:Value id=""CURRENCY_DENOM"" value=""EUR""/>
+				<generic:Value id=""EXR_TYPE"" value=""SP00""/>
+				<generic:Value id=""EXR_SUFFIX"" value=""A""/>
+			</generic:SeriesKey>
+			<generic:Obs>
+				<generic:ObsDimension value=""2002-01-02""/>
+				<generic:ObsValue value=""0.6262""/>
+			</generic:Obs>
+			<generic:Obs>
+				<generic:ObsDimension value=""2002-01-03""/>
+				<generic:ObsValue value=""0.6254""/>
+			</generic:Obs>
+		</generic:Series>
+		<generic:Series>
+			<generic:SeriesKey>
+				<generic:Value id=""FREQ"" value=""D""/>
+				<generic:Value id=""CURRENCY"" value=""USD""/>
+				<generic:Value id=""CURRENCY_DENOM"" value=""EUR""/>
+				<generic:Value id=""EXR_TYPE"" value=""SP00""/>
+				<generic:Value id=""EXR_SUFFIX"" value=""A""/>
+			</generic:SeriesKey>
+			<generic:Obs>
+				<generic:ObsDimension value=""2002-01-02""/>
+				<generic:ObsValue value=""0.9038""/>
+			</generic:Obs>
+			<generic:Obs>
+				<generic:ObsDimension value=""2002-01-03""/>
+				<generic:ObsValue value=""0.9036""/>
+			</generic:Obs>
+		</generic:Series>
+	</message:DataSet>
 </message:GenericData>"
 					),
 				}

@@ -25,68 +25,81 @@ using System.Globalization;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace ECB.Data.ExchangeRates
+namespace ECB.Data.ExchangeRates;
+
+/// <summary>
+///     Provides a method to parse the response of an HTTP request
+///     to ECB Data Portal web services.
+/// </summary>
+public class ExchangeRatesParser : IExchangeRatesParser
 {
-    public class ExchangeRatesParser : IExchangeRatesParser
-    {
-        public IEnumerable<ExchangeRate> Parse(string source)
-        {
-            var document = XDocument.Parse(source);
+	/// <summary>
+	///     Parses the response of an HTTP request to ECB Data
+	///     Portal web services.
+	/// </summary>
+	/// <param name="source">The XML response to parse.</param>
+	/// <returns>The currency exchange rates.</returns>
+	/// <exception cref="XmlException">
+	///     The response content does not contain a root element or
+	///     does not contain the namespace of prefix 'generic'.
+	/// </exception>
+	public IEnumerable<ExchangeRate> Parse(string source)
+	{
+		var document = XDocument.Parse(source);
 
-            var genericNamespace = document.Root!.GetNamespaceOfPrefix("generic")
-                ?? throw new XmlException("Namespace of prefix 'generic' is missing.");
+		var genericNamespace = document.Root!.GetNamespaceOfPrefix("generic")
+			?? throw new XmlException("Namespace of prefix 'generic' is missing.");
 
-            var seriesKeyValueName = XName.Get("Value", genericNamespace.NamespaceName);
-            var obsName = XName.Get("Obs", genericNamespace.NamespaceName);
-            var obsDimensionName = XName.Get("ObsDimension", genericNamespace.NamespaceName);
-            var obsValueName = XName.Get("ObsValue", genericNamespace.NamespaceName);
+		var seriesKeyValueName = XName.Get("Value", genericNamespace.NamespaceName);
+		var obsName = XName.Get("Obs", genericNamespace.NamespaceName);
+		var obsDimensionName = XName.Get("ObsDimension", genericNamespace.NamespaceName);
+		var obsValueName = XName.Get("ObsValue", genericNamespace.NamespaceName);
 
-            return document.Descendants(XName.Get("Series", genericNamespace.NamespaceName))
-                .Select(
-                    a =>
-                    {
-                        var seriesKeyValues = a.Descendants(seriesKeyValueName)
-                            .ToDictionary(
-                                b => b.Attribute("id")!.Value,
-                                b => b.Attribute("value")?.Value
-                            );
-                        return new
-                        {
-                            Frequency =
-                                seriesKeyValues.GetValueOrDefault("FREQ"),
-                            Currency =
-                                seriesKeyValues.GetValueOrDefault("CURRENCY"),
-                            CurrencyDenominator =
-                                seriesKeyValues.GetValueOrDefault("CURRENCY_DENOM"),
-                            ExchangeRateType =
-                                seriesKeyValues.GetValueOrDefault("EXR_TYPE"),
-                            SeriesVariation =
-                                seriesKeyValues.GetValueOrDefault("EXR_SUFFIX"),
-                            Obs = a.Descendants(obsName),
-                        };
-                    }
-                )
-                .SelectMany(
-                    a => a.Obs,
-                    (a, b) => new ExchangeRate
-                    {
-                        Frequency = a.Frequency,
-                        Currency = a.Currency,
-                        CurrencyDenominator = a.CurrencyDenominator,
-                        ExchangeRateType = a.ExchangeRateType,
-                        SeriesVariation = a.SeriesVariation,
-                        TimePeriod = b.Descendants(obsDimensionName)
-                            .FirstOrDefault()?.Attribute("value")?.Value,
-                        Value = decimal.TryParse(
-                            b.Descendants(obsValueName)
-                                .FirstOrDefault()?.Attribute("value")?.Value ?? "0",
-                            CultureInfo.InvariantCulture,
-                            out var value
-                        )
-                            ? value
-                            : 0,
-                    }
-                );
-        }
-    }
+		return document.Descendants(XName.Get("Series", genericNamespace.NamespaceName))
+			.Select(
+				a =>
+				{
+					var seriesKeyValues = a.Descendants(seriesKeyValueName)
+						.ToDictionary(
+							b => b.Attribute("id")!.Value,
+							b => b.Attribute("value")?.Value
+						);
+					return new
+					{
+						Frequency =
+							seriesKeyValues.GetValueOrDefault("FREQ"),
+						Currency =
+							seriesKeyValues.GetValueOrDefault("CURRENCY"),
+						CurrencyDenominator =
+							seriesKeyValues.GetValueOrDefault("CURRENCY_DENOM"),
+						ExchangeRateType =
+							seriesKeyValues.GetValueOrDefault("EXR_TYPE"),
+						SeriesVariation =
+							seriesKeyValues.GetValueOrDefault("EXR_SUFFIX"),
+						Obs = a.Descendants(obsName),
+					};
+				}
+			)
+			.SelectMany(
+				a => a.Obs,
+				(a, b) => new ExchangeRate
+				{
+					Frequency = a.Frequency,
+					Currency = a.Currency,
+					CurrencyDenominator = a.CurrencyDenominator,
+					ExchangeRateType = a.ExchangeRateType,
+					SeriesVariation = a.SeriesVariation,
+					TimePeriod = b.Descendants(obsDimensionName)
+						.FirstOrDefault()?.Attribute("value")?.Value,
+					Value = decimal.TryParse(
+						b.Descendants(obsValueName)
+							.FirstOrDefault()?.Attribute("value")?.Value ?? "0",
+						CultureInfo.InvariantCulture,
+						out var value
+					)
+						? value
+						: 0,
+				}
+			);
+	}
 }

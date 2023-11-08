@@ -11,7 +11,7 @@ public class ExchangeRatesClient : HttpClient
 | name | description |
 | --- | --- |
 | [ExchangeRatesClient](ExchangeRatesClient/ExchangeRatesClient.md)() | Initializes a new instance of the ExchangeRatesClient class using a HttpClientHandler that is disposed when this instance is disposed. |
-| [ExchangeRatesClient](ExchangeRatesClient/ExchangeRatesClient.md)(…) | Initializes a new instance of the ExchangeRatesClient class with the specified handler. The handler is disposed when this instance is disposed. (2 constructors) |
+| [ExchangeRatesClient](ExchangeRatesClient/ExchangeRatesClient.md)(…) | Initializes a new instance of the ExchangeRatesClient class with the specified handler. The handler is disposed when this instance is disposed. (3 constructors) |
 | [GetAnnualAverageRatesAsync](ExchangeRatesClient/GetAnnualAverageRatesAsync.md)(…) | Returns the annual average exchange rates of a list of currencies for a specific year. (2 methods) |
 | [GetDailyAverageRatesAsync](ExchangeRatesClient/GetDailyAverageRatesAsync.md)(…) | Returns the latest available daily average exchange rates of a list of currencies. (3 methods) |
 | [GetMonthlyAverageRatesAsync](ExchangeRatesClient/GetMonthlyAverageRatesAsync.md)(…) | Returns the monthly average exchange rates of a list of currencies for a specific month. (2 methods) |
