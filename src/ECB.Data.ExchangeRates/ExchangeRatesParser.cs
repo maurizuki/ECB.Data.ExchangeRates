@@ -22,6 +22,7 @@
 // OTHER DEALINGS IN THE SOFTWARE.
 
 using System.Globalization;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace ECB.Data.ExchangeRates
@@ -30,15 +31,10 @@ namespace ECB.Data.ExchangeRates
     {
         public IEnumerable<ExchangeRate> Parse(string source)
         {
-            if (string.IsNullOrWhiteSpace(source)) return new List<ExchangeRate>();
-
             var document = XDocument.Parse(source);
 
-            if (document.Root == null) return new List<ExchangeRate>();
-
-            var genericNamespace = document.Root.GetNamespaceOfPrefix("generic");
-
-            if (genericNamespace == null) return new List<ExchangeRate>();
+            var genericNamespace = document.Root!.GetNamespaceOfPrefix("generic")
+                ?? throw new XmlException("Namespace of prefix 'generic' is missing.");
 
             var seriesKeyValueName = XName.Get("Value", genericNamespace.NamespaceName);
             var obsName = XName.Get("Obs", genericNamespace.NamespaceName);
