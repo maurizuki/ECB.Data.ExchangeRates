@@ -7,7 +7,7 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <Title>ECB.Data.ExchangeRates</Title>
     <Authors>Maurizio Basaglia</Authors>
-    <Copyright>© 2023 Maurizio Basaglia</Copyright>
+    <Copyright>© 2023+ Maurizio Basaglia</Copyright>
     <PackageProjectUrl>https://github.com/maurizuki/ECB.Data.ExchangeRates</PackageProjectUrl>
     <PackageIcon>icon.png</PackageIcon>
     <RepositoryUrl>https://github.com/maurizuki/ECB.Data.ExchangeRates</RepositoryUrl>

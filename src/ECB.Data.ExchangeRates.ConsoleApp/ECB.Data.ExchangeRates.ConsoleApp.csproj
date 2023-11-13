@@ -6,7 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AssemblyName>ECBEXR</AssemblyName>
-    <Copyright>Copyright (c) 2023 Maurizio Basaglia</Copyright>
+    <Copyright>Copyright (c) 2023+ Maurizio Basaglia</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
