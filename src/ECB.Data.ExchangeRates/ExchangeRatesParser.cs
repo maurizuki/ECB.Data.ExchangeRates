@@ -94,6 +94,7 @@ public class ExchangeRatesParser : IExchangeRatesParser
 					Value = decimal.TryParse(
 						b.Descendants(obsValueName)
 							.FirstOrDefault()?.Attribute("value")?.Value ?? "0",
+						NumberStyles.Number,
 						CultureInfo.InvariantCulture,
 						out var value
 					)
