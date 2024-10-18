@@ -1,0 +1,26 @@
+meta {
+  name: Daily Average Rates
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUri}}/D.{{currencies}}.EUR.SP00.A?detail=dataOnly&lastNObservations=1
+  body: none
+  auth: none
+}
+
+params:query {
+  detail: dataOnly
+  lastNObservations: 1
+  ~startPeriod: 2020-01-01
+  ~endPeriod: 2020-12-31
+}
+
+headers {
+  Accept: application/xml
+}
+
+vars:pre-request {
+  currencies: USD+GBP
+}

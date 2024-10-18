@@ -1,0 +1,25 @@
+meta {
+  name: Monthly Average Rates
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUri}}/M.{{currencies}}.EUR.SP00.A?detail=dataOnly&startPeriod=2020-01&endPeriod=2020-12
+  body: none
+  auth: none
+}
+
+params:query {
+  detail: dataOnly
+  startPeriod: 2020-01
+  endPeriod: 2020-12
+}
+
+headers {
+  Accept: application/xml
+}
+
+vars:pre-request {
+  currencies: USD+GBP
+}

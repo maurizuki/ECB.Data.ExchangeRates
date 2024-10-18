@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "ECB Exchange Rates",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

@@ -1,0 +1,25 @@
+meta {
+  name: Annual Average Rates
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUri}}/A.{{currencies}}.EUR.SP00.A?detail=dataOnly&startPeriod=2010&endPeriod=2020
+  body: none
+  auth: none
+}
+
+params:query {
+  detail: dataOnly
+  startPeriod: 2010
+  endPeriod: 2020
+}
+
+headers {
+  Accept: application/xml
+}
+
+vars:pre-request {
+  currencies: USD+GBP
+}
