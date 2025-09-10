@@ -29,6 +29,8 @@ namespace ECB.Data.ExchangeRates;
 /// </summary>
 public class ExchangeRatesClient : HttpClient
 {
+	private static readonly Uri DefaultBaseAddress = new("https://data-api.ecb.europa.eu/service/data/EXR/");
+
 	private readonly IExchangeRatesParser _parser;
 
 	/// <summary>
@@ -97,7 +99,7 @@ public class ExchangeRatesClient : HttpClient
 		: base(handler, disposeHandler)
 	{
 		_parser = parser ?? throw new ArgumentNullException(nameof(parser));
-		BaseAddress = new Uri("https://data-api.ecb.europa.eu/service/data/EXR/");
+		BaseAddress = DefaultBaseAddress;
 	}
 
 	/// <summary>
