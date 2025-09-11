@@ -119,14 +119,7 @@ public class ExchangeRatesClient : HttpClient
 	/// </exception>
 	public async Task<IEnumerable<ExchangeRate>> GetDailyAverageRatesAsync(params string[] currencies)
 	{
-		return await GetExchangeRatesAsync(
-			string.Format(
-				ExchangeRatesRequestUriFmt,
-				"D",
-				Format(currencies),
-				"&lastNObservations=1"
-			)
-		);
+		return await GetExchangeRatesAsync(MEASUREMENT_FREQUENCY_DAILY, currencies, "&lastNObservations=1");
 	}
 
 	/// <summary>
@@ -173,14 +166,7 @@ public class ExchangeRatesClient : HttpClient
 	/// </exception>
 	public async Task<IEnumerable<ExchangeRate>> GetDailyAverageRatesAsync(DateTime startDate, DateTime endDate, params string[] currencies)
 	{
-		return await GetExchangeRatesAsync(
-			string.Format(
-				ExchangeRatesRequestUriFmt,
-				"D",
-				Format(currencies),
-				$"&startPeriod={Format(startDate)}&endPeriod={Format(endDate)}"
-			)
-		);
+		return await GetExchangeRatesAsync(MEASUREMENT_FREQUENCY_DAILY, currencies, $"&startPeriod={startDate:yyyy-MM-dd}&endPeriod={endDate:yyyy-MM-dd}");
 	}
 
 	/// <summary>
@@ -234,14 +220,7 @@ public class ExchangeRatesClient : HttpClient
 	/// </exception>
 	public async Task<IEnumerable<ExchangeRate>> GetMonthlyAverageRatesAsync(int startMonth, int startYear, int endMonth, int endYear, params string[] currencies)
 	{
-		return await GetExchangeRatesAsync(
-			string.Format(
-				ExchangeRatesRequestUriFmt,
-				"M",
-				Format(currencies),
-				$"&startPeriod={Format(startMonth, startYear)}&endPeriod={Format(endMonth, endYear)}"
-			)
-		);
+		return await GetExchangeRatesAsync(MEASUREMENT_FREQUENCY_MONTHLY, currencies, $"&startPeriod={startYear:D4}-{startMonth:D2}&endPeriod={endYear:D4}-{endMonth:D2}");
 	}
 
 	/// <summary>
@@ -288,46 +267,21 @@ public class ExchangeRatesClient : HttpClient
 	/// </exception>
 	public async Task<IEnumerable<ExchangeRate>> GetAnnualAverageRatesAsync(int startYear, int endYear, params string[] currencies)
 	{
-		return await GetExchangeRatesAsync(
-			string.Format(
-				ExchangeRatesRequestUriFmt,
-				"A",
-				Format(currencies),
-				$"&startPeriod={Format(startYear)}&endPeriod={Format(endYear)}"
-			)
-		);
+		return await GetExchangeRatesAsync(MEASUREMENT_FREQUENCY_ANNUAL, currencies, $"&startPeriod={startYear:D4}&endPeriod={endYear:D4}");
 	}
 
-	private const string ExchangeRatesRequestUriFmt = "{0}.{1}.EUR.SP00.A?detail=dataOnly{2}";
+	private const string MEASUREMENT_FREQUENCY_DAILY = "D";
+	private const string MEASUREMENT_FREQUENCY_MONTHLY = "M";
+	private const string MEASUREMENT_FREQUENCY_ANNUAL = "A";
 
-	private static string Format(params string[] parameters)
+	private async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(string frequency, string[] currencies, string parameters)
 	{
-		return string.Join('+', parameters);
-	}
-
-	private static string Format(DateTime date)
-	{
-		return date.ToString("yyyy-MM-dd");
-	}
-
-	private static string Format(int month, int year)
-	{
-		return $"{year:D4}-{month:D2}";
-	}
-
-	private static string Format(int year)
-	{
-		return $"{year:D4}";
-	}
-
-	private async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(string requestUri)
-	{
-		var response = await GetAsync(requestUri);
+		var response = await GetAsync($"{frequency}.{string.Join('+', currencies)}.EUR.SP00.A?detail=dataOnly{parameters}");
 
 		if (!response.IsSuccessStatusCode)
 		{
 			throw new HttpRequestException(
-				$"Response status code does not indicate success: {(int) response.StatusCode} ({response.ReasonPhrase})",
+				$"Response status code does not indicate success: {(int)response.StatusCode} ({response.ReasonPhrase})",
 				null,
 				response.StatusCode
 			);
