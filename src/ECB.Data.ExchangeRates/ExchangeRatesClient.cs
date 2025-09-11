@@ -276,15 +276,19 @@ public class ExchangeRatesClient : HttpClient
 
 	private async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(string frequency, string[] currencies, string parameters)
 	{
-		var response = await GetAsync($"{frequency}.{string.Join('+', currencies)}.EUR.SP00.A?detail=dataOnly{parameters}");
+		var response = await GetAsync($"{frequency}.{string.Join("+", currencies)}.EUR.SP00.A?detail=dataOnly{parameters}");
 
 		if (!response.IsSuccessStatusCode)
 		{
+#if NET5_0_OR_GREATER
 			throw new HttpRequestException(
 				$"Response status code does not indicate success: {(int)response.StatusCode} ({response.ReasonPhrase})",
 				null,
 				response.StatusCode
 			);
+#else
+			throw new HttpRequestException($"Response status code does not indicate success: {(int)response.StatusCode} ({response.ReasonPhrase})");
+#endif
 		}
 
 		return _parser.Parse(await response.Content.ReadAsStringAsync());

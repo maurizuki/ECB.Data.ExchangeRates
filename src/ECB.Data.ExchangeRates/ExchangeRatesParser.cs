@@ -104,3 +104,13 @@ public class ExchangeRatesParser : IExchangeRatesParser
 			);
 	}
 }
+
+#if !NETSTANDARD2_1_OR_GREATER
+internal static class Extensions
+{
+	public static TValue? GetValueOrDefault<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dictionary, TKey key)
+	{
+		return dictionary.ContainsKey(key) ? dictionary[key] : default;
+	}
+}
+#endif
