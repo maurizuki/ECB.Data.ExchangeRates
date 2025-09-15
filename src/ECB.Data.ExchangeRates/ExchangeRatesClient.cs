@@ -280,14 +280,11 @@ public class ExchangeRatesClient : HttpClient
 
 		if (!response.IsSuccessStatusCode)
 		{
+			var message = $"Response status code does not indicate success: {(int)response.StatusCode} ({response.ReasonPhrase})";
 #if NET5_0_OR_GREATER
-			throw new HttpRequestException(
-				$"Response status code does not indicate success: {(int)response.StatusCode} ({response.ReasonPhrase})",
-				null,
-				response.StatusCode
-			);
+			throw new HttpRequestException(message, null, response.StatusCode);
 #else
-			throw new HttpRequestException($"Response status code does not indicate success: {(int)response.StatusCode} ({response.ReasonPhrase})");
+			throw new HttpRequestException(message);
 #endif
 		}
 
