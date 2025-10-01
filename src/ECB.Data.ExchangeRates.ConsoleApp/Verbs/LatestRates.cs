@@ -29,11 +29,11 @@ namespace ECB.Data.ExchangeRates.ConsoleApp.Verbs;
 public class LatestRates
 {
 	[Value(0, HelpText = "List the required currencies. Leave empty to get all the valid currencies.")]
-	public IEnumerable<string> Currencies { get; set; } = new List<string>();
+	public IEnumerable<string> Currencies { get; set; } = [];
 
 	public static void Execute(ExchangeRatesClient client, LatestRates options)
 	{
-		var rates = client.GetDailyAverageRatesAsync(options.Currencies.ToArray()).Result;
+		var rates = client.GetDailyAverageRatesAsync([.. options.Currencies]).Result;
 
 		Console.WriteLine("Date        Currency  Currency den.  Exchange rate");
 		foreach (var rate in rates)

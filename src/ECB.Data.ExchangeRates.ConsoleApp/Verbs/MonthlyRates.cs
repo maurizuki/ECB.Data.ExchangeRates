@@ -35,15 +35,11 @@ public class MonthlyRates
 	public int Year { get; set; }
 
 	[Value(2, HelpText = "List the required currencies. Leave empty to get all the valid currencies.")]
-	public IEnumerable<string> Currencies { get; set; } = new List<string>();
+	public IEnumerable<string> Currencies { get; set; } = [];
 
 	public static void Execute(ExchangeRatesClient client, MonthlyRates options)
 	{
-		var rates = client.GetMonthlyAverageRatesAsync(
-			options.Month,
-			options.Year,
-			options.Currencies.ToArray()
-		).Result;
+		var rates = client.GetMonthlyAverageRatesAsync(options.Month, options.Year, [.. options.Currencies]).Result;
 
 		Console.WriteLine("Month    Currency  Currency den.  Exchange rate");
 		foreach (var rate in rates)

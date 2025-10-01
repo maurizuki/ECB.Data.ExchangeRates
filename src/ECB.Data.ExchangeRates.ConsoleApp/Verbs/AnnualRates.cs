@@ -32,14 +32,11 @@ public class AnnualRates
 	public int Year { get; set; }
 
 	[Value(1, HelpText = "List the required currencies. Leave empty to get all the valid currencies.")]
-	public IEnumerable<string> Currencies { get; set; } = new List<string>();
+	public IEnumerable<string> Currencies { get; set; } = [];
 
 	public static void Execute(ExchangeRatesClient client, AnnualRates options)
 	{
-		var rates = client.GetAnnualAverageRatesAsync(
-			options.Year,
-			options.Currencies.ToArray()
-		).Result;
+		var rates = client.GetAnnualAverageRatesAsync(options.Year, [.. options.Currencies]).Result;
 
 		Console.WriteLine("Year  Currency  Currency den.  Exchange rate");
 		foreach (var rate in rates)

@@ -35,15 +35,11 @@ public class DailyRatesByDateRange
 	public DateTime EndDate { get; set; }
 
 	[Value(2, HelpText = "List the required currencies. Leave empty to get all the valid currencies.")]
-	public IEnumerable<string> Currencies { get; set; } = new List<string>();
+	public IEnumerable<string> Currencies { get; set; } = [];
 
 	public static void Execute(ExchangeRatesClient client, DailyRatesByDateRange options)
 	{
-		var rates = client.GetDailyAverageRatesAsync(
-			options.StartDate,
-			options.EndDate,
-			options.Currencies.ToArray()
-		).Result;
+		var rates = client.GetDailyAverageRatesAsync(options.StartDate, options.EndDate, [.. options.Currencies]).Result;
 
 		Console.WriteLine("Date        Currency  Currency den.  Exchange rate");
 		foreach (var rate in rates)
