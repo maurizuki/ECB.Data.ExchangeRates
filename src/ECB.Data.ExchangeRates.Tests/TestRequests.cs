@@ -27,8 +27,11 @@ public class TestRequests
 {
 	private const string BaseAddress = "https://data-api.ecb.europa.eu/service/data/EXR/";
 	
-	private const string DefaultResponseMessageContent = @"<?xml version=""1.0"" encoding=""UTF-8""?>
-<message:GenericData xmlns:message=""http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message"" xmlns:generic=""http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic""></message:GenericData>";
+	private static readonly HttpResponseMessage DefaultResponseMessage = new()
+	{
+		Content = new StringContent(@"<?xml version=""1.0"" encoding=""UTF-8""?>
+<message:GenericData xmlns:message=""http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message"" xmlns:generic=""http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic""></message:GenericData>"),
+	};
 
 	[Theory]
 	[InlineData(new string[0], BaseAddress + "D..EUR.SP00.A?detail=dataOnly&lastNObservations=1")]
@@ -44,7 +47,7 @@ public class TestRequests
 
 					Assert.Equal(expectedRequestUri, request.RequestUri?.ToString());
 
-					return new HttpResponseMessage{ Content = new StringContent(DefaultResponseMessageContent) };
+					return DefaultResponseMessage;
 				}
 			)
 		);
@@ -66,7 +69,7 @@ public class TestRequests
 
 					Assert.Equal(expectedRequestUri, request.RequestUri?.ToString());
 
-					return new HttpResponseMessage { Content = new StringContent(DefaultResponseMessageContent) };
+					return DefaultResponseMessage;
 				}
 			)
 		);
@@ -88,7 +91,7 @@ public class TestRequests
 
 					Assert.Equal(expectedRequestUri, request.RequestUri?.ToString());
 
-					return new HttpResponseMessage { Content = new StringContent(DefaultResponseMessageContent) };
+					return DefaultResponseMessage;
 				}
 			)
 		);
@@ -114,7 +117,7 @@ public class TestRequests
 
 					Assert.Equal(expectedRequestUri, request.RequestUri?.ToString());
 
-					return new HttpResponseMessage { Content = new StringContent(DefaultResponseMessageContent) };
+					return DefaultResponseMessage;
 				}
 			)
 		);
@@ -136,7 +139,7 @@ public class TestRequests
 
 					Assert.Equal(expectedRequestUri, request.RequestUri?.ToString());
 
-					return new HttpResponseMessage{ Content = new StringContent(DefaultResponseMessageContent) };
+					return DefaultResponseMessage;
 				}
 			)
 		);
@@ -158,7 +161,7 @@ public class TestRequests
 
 					Assert.Equal(expectedRequestUri, request.RequestUri?.ToString());
 
-					return new HttpResponseMessage{ Content = new StringContent(DefaultResponseMessageContent) };
+					return DefaultResponseMessage;
 				}
 			)
 		);
@@ -180,7 +183,7 @@ public class TestRequests
 
 					Assert.Equal(expectedRequestUri, request.RequestUri?.ToString());
 
-					return new HttpResponseMessage{ Content = new StringContent(DefaultResponseMessageContent) };
+					return DefaultResponseMessage;
 				}
 			)
 		);

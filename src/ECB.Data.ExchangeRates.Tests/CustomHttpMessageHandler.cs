@@ -23,17 +23,10 @@
 
 namespace ECB.Data.ExchangeRates.Tests;
 
-internal class CustomHttpMessageHandler : HttpMessageHandler
+internal class CustomHttpMessageHandler(Func<HttpRequestMessage, HttpResponseMessage> sendFunc) : HttpMessageHandler
 {
-	private readonly Func<HttpRequestMessage, HttpResponseMessage> _sendFunc;
-
-	public CustomHttpMessageHandler(Func<HttpRequestMessage, HttpResponseMessage> sendFunc)
-	{
-		_sendFunc = sendFunc;
-	}
-
 	protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
 	{
-		return Task.FromResult(_sendFunc.Invoke(request));
+		return Task.FromResult(sendFunc(request));
 	}
 }

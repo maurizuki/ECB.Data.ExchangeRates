@@ -58,19 +58,14 @@ public class TestResults
 
 		var rates = await client.GetDailyAverageRatesAsync();
 
-		Assert.Collection(
-			rates,
-			rate =>
-			{
-				Assert.Equal("D", rate.Frequency);
-				Assert.Equal("USD", rate.Currency);
-				Assert.Equal("EUR", rate.CurrencyDenominator);
-				Assert.Equal("SP00", rate.ExchangeRateType);
-				Assert.Equal("A", rate.SeriesVariation);
-				Assert.Equal("2002-01-02", rate.TimePeriod);
-				Assert.Equal((decimal) 0.9038, rate.Value);
-			}
-		);
+		var rate = Assert.Single(rates);
+		Assert.Equal("D", rate.Frequency);
+		Assert.Equal("USD", rate.Currency);
+		Assert.Equal("EUR", rate.CurrencyDenominator);
+		Assert.Equal("SP00", rate.ExchangeRateType);
+		Assert.Equal("A", rate.SeriesVariation);
+		Assert.Equal("2002-01-02", rate.TimePeriod);
+		Assert.Equal(0.9038m, rate.Value);
 	}
 
 	[Fact]
@@ -120,7 +115,7 @@ public class TestResults
 				Assert.Equal("SP00", rate.ExchangeRateType);
 				Assert.Equal("A", rate.SeriesVariation);
 				Assert.Equal("2002-01-02", rate.TimePeriod);
-				Assert.Equal((decimal) 0.9038, rate.Value);
+				Assert.Equal(0.9038m, rate.Value);
 			},
 			rate =>
 			{
@@ -130,7 +125,7 @@ public class TestResults
 				Assert.Equal("SP00", rate.ExchangeRateType);
 				Assert.Equal("A", rate.SeriesVariation);
 				Assert.Equal("2002-01-03", rate.TimePeriod);
-				Assert.Equal((decimal) 0.9036, rate.Value);
+				Assert.Equal(0.9036m, rate.Value);
 			}
 		);
 	}
@@ -191,7 +186,7 @@ public class TestResults
 				Assert.Equal("SP00", rate.ExchangeRateType);
 				Assert.Equal("A", rate.SeriesVariation);
 				Assert.Equal("2002-01-02", rate.TimePeriod);
-				Assert.Equal((decimal) 0.6262, rate.Value);
+				Assert.Equal(0.6262m, rate.Value);
 			},
 			rate =>
 			{
@@ -201,7 +196,7 @@ public class TestResults
 				Assert.Equal("SP00", rate.ExchangeRateType);
 				Assert.Equal("A", rate.SeriesVariation);
 				Assert.Equal("2002-01-02", rate.TimePeriod);
-				Assert.Equal((decimal) 0.9038, rate.Value);
+				Assert.Equal(0.9038m, rate.Value);
 			}
 		);
 	}
@@ -270,7 +265,7 @@ public class TestResults
 				Assert.Equal("SP00", rate.ExchangeRateType);
 				Assert.Equal("A", rate.SeriesVariation);
 				Assert.Equal("2002-01-02", rate.TimePeriod);
-				Assert.Equal((decimal) 0.6262, rate.Value);
+				Assert.Equal(0.6262m, rate.Value);
 			},
 			rate =>
 			{
@@ -280,7 +275,7 @@ public class TestResults
 				Assert.Equal("SP00", rate.ExchangeRateType);
 				Assert.Equal("A", rate.SeriesVariation);
 				Assert.Equal("2002-01-03", rate.TimePeriod);
-				Assert.Equal((decimal) 0.6254, rate.Value);
+				Assert.Equal(0.6254m, rate.Value);
 			},
 			rate =>
 			{
@@ -290,7 +285,7 @@ public class TestResults
 				Assert.Equal("SP00", rate.ExchangeRateType);
 				Assert.Equal("A", rate.SeriesVariation);
 				Assert.Equal("2002-01-02", rate.TimePeriod);
-				Assert.Equal((decimal) 0.9038, rate.Value);
+				Assert.Equal(0.9038m, rate.Value);
 			},
 			rate =>
 			{
@@ -300,7 +295,7 @@ public class TestResults
 				Assert.Equal("SP00", rate.ExchangeRateType);
 				Assert.Equal("A", rate.SeriesVariation);
 				Assert.Equal("2002-01-03", rate.TimePeriod);
-				Assert.Equal((decimal) 0.9036, rate.Value);
+				Assert.Equal(0.9036m, rate.Value);
 			}
 		);
 	}
