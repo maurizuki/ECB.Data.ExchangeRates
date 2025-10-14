@@ -276,7 +276,8 @@ public class ExchangeRatesClient : HttpClient
 
 	private async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(string frequency, string[] currencies, string parameters)
 	{
-		var response = (await GetAsync($"{frequency}.{string.Join("+", currencies)}.EUR.SP00.A?detail=dataOnly{parameters}")).EnsureSuccessStatusCode();
-		return _parser.Parse(await response.Content.ReadAsStringAsync());
+		var response = (await GetAsync($"{frequency}.{string.Join("+", currencies)}.EUR.SP00.A?detail=dataOnly{parameters}", HttpCompletionOption.ResponseHeadersRead)).EnsureSuccessStatusCode();
+		using var stream = await response.Content.ReadAsStreamAsync();
+		return _parser.Parse(stream);
 	}
 }

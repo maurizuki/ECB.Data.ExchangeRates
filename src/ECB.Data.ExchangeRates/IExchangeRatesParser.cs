@@ -33,7 +33,8 @@ public interface IExchangeRatesParser
 	///     Parses the response of an HTTP request to ECB Data
 	///     Portal web services.
 	/// </summary>
-	/// <param name="source">The XML response to parse.</param>
+	/// <param name="stream">The stream that contains the XML response to
+	///		parse.</param>
 	/// <returns>The currency exchange rates.</returns>
-	IEnumerable<ExchangeRate> Parse(string source);
+	IEnumerable<ExchangeRate> Parse(Stream stream);
 }

@@ -26,12 +26,8 @@ namespace ECB.Data.ExchangeRates.Tests;
 public class TestRequests
 {
 	private const string BaseAddress = "https://data-api.ecb.europa.eu/service/data/EXR/";
-	
-	private static readonly HttpResponseMessage DefaultResponseMessage = new()
-	{
-		Content = new StringContent(@"<?xml version=""1.0"" encoding=""UTF-8""?>
-<message:GenericData xmlns:message=""http://www.sdmx.org/resources/sdmxml/schemas/v2_1/message"" xmlns:generic=""http://www.sdmx.org/resources/sdmxml/schemas/v2_1/data/generic""></message:GenericData>"),
-	};
+
+	private static readonly IExchangeRatesParser Parser = new FakeExchangeRatesParser();
 
 	[Theory]
 	[InlineData(new string[0], BaseAddress + "D..EUR.SP00.A?detail=dataOnly&lastNObservations=1")]
@@ -47,9 +43,11 @@ public class TestRequests
 
 					Assert.Equal(expectedRequestUri, request.RequestUri?.ToString());
 
-					return DefaultResponseMessage;
+					return new HttpResponseMessage();
 				}
-			)
+			),
+			true,
+			Parser
 		);
 
 		await client.GetDailyAverageRatesAsync(currencies);
@@ -69,9 +67,11 @@ public class TestRequests
 
 					Assert.Equal(expectedRequestUri, request.RequestUri?.ToString());
 
-					return DefaultResponseMessage;
+					return new HttpResponseMessage();
 				}
-			)
+			),
+			true,
+			Parser
 		);
 
 		await client.GetDailyAverageRatesAsync(new DateTime(2002, 1, 2), currencies);
@@ -91,9 +91,11 @@ public class TestRequests
 
 					Assert.Equal(expectedRequestUri, request.RequestUri?.ToString());
 
-					return DefaultResponseMessage;
+					return new HttpResponseMessage();
 				}
-			)
+			),
+			true,
+			Parser
 		);
 
 		await client.GetDailyAverageRatesAsync(
@@ -117,9 +119,11 @@ public class TestRequests
 
 					Assert.Equal(expectedRequestUri, request.RequestUri?.ToString());
 
-					return DefaultResponseMessage;
+					return new HttpResponseMessage();
 				}
-			)
+			),
+			true,
+			Parser
 		);
 
 		await client.GetMonthlyAverageRatesAsync(1, 2002, currencies);
@@ -139,9 +143,11 @@ public class TestRequests
 
 					Assert.Equal(expectedRequestUri, request.RequestUri?.ToString());
 
-					return DefaultResponseMessage;
+					return new HttpResponseMessage();
 				}
-			)
+			),
+			true,
+			Parser
 		);
 
 		await client.GetMonthlyAverageRatesAsync(1, 2002, 12, 2003, currencies);
@@ -161,9 +167,11 @@ public class TestRequests
 
 					Assert.Equal(expectedRequestUri, request.RequestUri?.ToString());
 
-					return DefaultResponseMessage;
+					return new HttpResponseMessage();
 				}
-			)
+			),
+			true,
+			Parser
 		);
 
 		await client.GetAnnualAverageRatesAsync(2002, currencies);
@@ -183,11 +191,21 @@ public class TestRequests
 
 					Assert.Equal(expectedRequestUri, request.RequestUri?.ToString());
 
-					return DefaultResponseMessage;
+					return new HttpResponseMessage();
 				}
-			)
+			),
+			true,
+			Parser
 		);
 
 		await client.GetAnnualAverageRatesAsync(2002, 2003, currencies);
+	}
+}
+
+internal class FakeExchangeRatesParser : IExchangeRatesParser
+{
+	public IEnumerable<ExchangeRate> Parse(Stream stream)
+	{
+		return [];
 	}
 }
