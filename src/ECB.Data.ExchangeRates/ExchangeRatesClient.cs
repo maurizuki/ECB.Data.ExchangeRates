@@ -31,6 +31,8 @@ public class ExchangeRatesClient : HttpClient
 {
 	private static readonly Uri DefaultBaseAddress = new("https://data-api.ecb.europa.eu/service/data/EXR/");
 
+	private const string DefaultMediaType = "application/vnd.sdmx.genericdata+xml;version=2.1";
+
 	private readonly IExchangeRatesParser _parser;
 
 	/// <summary>
@@ -100,6 +102,7 @@ public class ExchangeRatesClient : HttpClient
 	{
 		_parser = parser ?? throw new ArgumentNullException(nameof(parser));
 		BaseAddress = DefaultBaseAddress;
+		DefaultRequestHeaders.Add("Accept", DefaultMediaType);
 	}
 
 	/// <summary>
