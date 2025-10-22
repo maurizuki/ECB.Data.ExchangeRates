@@ -3,12 +3,12 @@
 Parses the response of an HTTP request to ECB Data Portal web services.
 
 ```csharp
-public IEnumerable<ExchangeRate> Parse(string source)
+public IEnumerable<ExchangeRate> Parse(Stream stream)
 ```
 
 | parameter | description |
 | --- | --- |
-| source | The XML response to parse. |
+| stream | The stream that contains the XML response to parse. |
 
 ## Return Value
 
