@@ -1,1 +1,2 @@
-src\XmlDocGen\bin\Release\net8.0\XmlDocGen src\XmlDocGen\bin\Release\net8.0\ECB.Data.ExchangeRates.dll docs --clean
+dotnet build src\XmlDocGen\XmlDocGen.csproj -c Release -o bin
+bin\XmlDocGen.exe bin\ECB.Data.ExchangeRates.dll docs --clean
