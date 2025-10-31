@@ -21,7 +21,7 @@
     <PackageReleaseNotes>- Target frameworks changed to netstandard2.0, netstandard2.1
 - HTTP response body streaming
 - Request specific media type</PackageReleaseNotes>
-    <Version>2.0.0-rc.1</Version>
+    <Version>2.0.0-rc.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
