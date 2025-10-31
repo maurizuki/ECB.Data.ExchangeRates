@@ -12,6 +12,7 @@ public class ExchangeRatesParser : IExchangeRatesParser
 | --- | --- |
 | [ExchangeRatesParser](ExchangeRatesParser/ExchangeRatesParser.md)() | The default constructor. |
 | [Parse](ExchangeRatesParser/Parse.md)(…) | Parses the response of an HTTP request to ECB Data Portal web services. |
+| static [Parser](ExchangeRatesParser/Parser.md) { get; } | Gets an instance of the parser. |
 
 ## See Also
 
