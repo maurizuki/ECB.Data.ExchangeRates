@@ -72,7 +72,7 @@ public class ExchangeRatesClient : HttpClient
 	/// </param>
 	/// <exception cref="ArgumentNullException"><paramref name="handler"/> is <c>null</c>.</exception>
 	public ExchangeRatesClient(HttpMessageHandler handler, bool disposeHandler)
-		: this(handler, disposeHandler, new ExchangeRatesParser())
+		: this(handler, disposeHandler, ExchangeRatesParser.Parser)
 	{
 	}
 

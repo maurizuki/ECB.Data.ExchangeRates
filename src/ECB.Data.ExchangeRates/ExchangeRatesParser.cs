@@ -33,6 +33,14 @@ namespace ECB.Data.ExchangeRates;
 /// </summary>
 public class ExchangeRatesParser : IExchangeRatesParser
 {
+	private static readonly ExchangeRatesParser _parser = new();
+
+	/// <summary>
+	/// Gets an instance of the parser.
+	/// </summary>
+	/// <returns>An instance of the parser.</returns>
+	public static IExchangeRatesParser Parser => _parser;
+
 	/// <summary>
 	///     Parses the response of an HTTP request to ECB Data
 	///     Portal web services.
