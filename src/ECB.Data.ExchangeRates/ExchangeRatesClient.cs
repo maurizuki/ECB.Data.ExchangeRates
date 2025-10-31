@@ -51,7 +51,7 @@ public class ExchangeRatesClient : HttpClient
 	///     The HttpMessageHandler responsible for processing the HTTP response
 	///     messages.
 	/// </param>
-	/// <exception cref="ArgumentNullException">handler is null.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="handler"/> is <c>null</c>.</exception>
 	public ExchangeRatesClient(HttpMessageHandler handler) : this(handler, true)
 	{
 	}
@@ -66,11 +66,11 @@ public class ExchangeRatesClient : HttpClient
 	///     messages.
 	/// </param>
 	/// <param name="disposeHandler">
-	///     true if the inner handler should be disposed of by
-	///     ExchangeRatesClient.Dispose; false if you intend to reuse the inner
+	///     <c>true</c> if the inner handler should be disposed of by
+	///     ExchangeRatesClient.Dispose; <c>false</c> if you intend to reuse the inner
 	///     handler.
 	/// </param>
-	/// <exception cref="ArgumentNullException">handler is null.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="handler"/> is <c>null</c>.</exception>
 	public ExchangeRatesClient(HttpMessageHandler handler, bool disposeHandler)
 		: this(handler, disposeHandler, new ExchangeRatesParser())
 	{
@@ -86,14 +86,14 @@ public class ExchangeRatesClient : HttpClient
 	///     messages.
 	/// </param>
 	/// <param name="disposeHandler">
-	///     true if the inner handler should be disposed of by
-	///     ExchangeRatesClient.Dispose; false if you intend to reuse the inner
+	///     <c>true</c> if the inner handler should be disposed of by
+	///     ExchangeRatesClient.Dispose; <c>false</c> if you intend to reuse the inner
 	///     handler.
 	/// </param>
 	/// <param name="parser">
 	///		A custom parser for the HTTP response content.
 	/// </param>
-	/// <exception cref="ArgumentNullException">handler is null or parser is null.</exception>
+	/// <exception cref="ArgumentNullException"><paramref name="handler"/> is <c>null</c> or <paramref name="parser"/> is <c>null</c>.</exception>
 	public ExchangeRatesClient(
 		HttpMessageHandler handler,
 		bool disposeHandler,
