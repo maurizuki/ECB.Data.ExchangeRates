@@ -6,6 +6,10 @@ Gets or sets the currency measured.
 public string? Currency { get; set; }
 ```
 
+## Return Value
+
+The currency measured.
+
 ## See Also
 
 * class [ExchangeRate](../ExchangeRate.md)

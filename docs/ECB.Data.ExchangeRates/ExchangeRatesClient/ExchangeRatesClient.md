@@ -29,7 +29,7 @@ public ExchangeRatesClient(HttpMessageHandler handler)
 
 | exception | condition |
 | --- | --- |
-| ArgumentNullException | handler is null. |
+| ArgumentNullException | *handler* is `null`. |
 
 ## See Also
 
@@ -49,13 +49,13 @@ public ExchangeRatesClient(HttpMessageHandler handler, bool disposeHandler)
 | parameter | description |
 | --- | --- |
 | handler | The HttpMessageHandler responsible for processing the HTTP response messages. |
-| disposeHandler | true if the inner handler should be disposed of by ExchangeRatesClient.Dispose; false if you intend to reuse the inner handler. |
+| disposeHandler | `true` if the inner handler should be disposed of by ExchangeRatesClient.Dispose; `false` if you intend to reuse the inner handler. |
 
 ## Exceptions
 
 | exception | condition |
 | --- | --- |
-| ArgumentNullException | handler is null. |
+| ArgumentNullException | *handler* is `null`. |
 
 ## See Also
 
@@ -76,14 +76,14 @@ public ExchangeRatesClient(HttpMessageHandler handler, bool disposeHandler,
 | parameter | description |
 | --- | --- |
 | handler | The HttpMessageHandler responsible for processing the HTTP response messages. |
-| disposeHandler | true if the inner handler should be disposed of by ExchangeRatesClient.Dispose; false if you intend to reuse the inner handler. |
+| disposeHandler | `true` if the inner handler should be disposed of by ExchangeRatesClient.Dispose; `false` if you intend to reuse the inner handler. |
 | parser | A custom parser for the HTTP response content. |
 
 ## Exceptions
 
 | exception | condition |
 | --- | --- |
-| ArgumentNullException | handler is null or parser is null. |
+| ArgumentNullException | *handler* is `null` or *parser* is `null`. |
 
 ## See Also
 

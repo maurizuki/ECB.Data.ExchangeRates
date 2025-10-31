@@ -6,6 +6,10 @@ Gets or sets the frequency at which the exchange rate is measured.
 public string? Frequency { get; set; }
 ```
 
+## Return Value
+
+The frequency at which the exchange rate is measured.
+
 ## See Also
 
 * class [ExchangeRate](../ExchangeRate.md)

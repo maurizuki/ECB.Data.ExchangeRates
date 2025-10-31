@@ -6,6 +6,10 @@ Gets or sets the time period measured according to the frequency.
 public string? TimePeriod { get; set; }
 ```
 
+## Return Value
+
+The time period measured according to the frequency.
+
 ## See Also
 
 * class [ExchangeRate](../ExchangeRate.md)

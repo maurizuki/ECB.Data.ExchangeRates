@@ -6,6 +6,10 @@ Gets or sets the currency against which the exchange rate is measured.
 public string? CurrencyDenominator { get; set; }
 ```
 
+## Return Value
+
+The currency against which the exchange rate is measured.
+
 ## See Also
 
 * class [ExchangeRate](../ExchangeRate.md)

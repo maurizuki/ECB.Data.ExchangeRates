@@ -6,6 +6,10 @@ Gets or sets the exchange rate value measured.
 public decimal Value { get; set; }
 ```
 
+## Return Value
+
+The exchange rate value measured.
+
 ## See Also
 
 * class [ExchangeRate](../ExchangeRate.md)

@@ -6,6 +6,10 @@ Gets or sets the type of the exchange rate.
 public string? ExchangeRateType { get; set; }
 ```
 
+## Return Value
+
+The type of the exchange rate.
+
 ## See Also
 
 * class [ExchangeRate](../ExchangeRate.md)

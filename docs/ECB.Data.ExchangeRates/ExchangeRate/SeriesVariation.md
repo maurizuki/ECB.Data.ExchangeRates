@@ -6,6 +6,10 @@ Gets or sets the time series variation.
 public string? SeriesVariation { get; set; }
 ```
 
+## Return Value
+
+The time series variation.
+
 ## See Also
 
 * class [ExchangeRate](../ExchangeRate.md)
