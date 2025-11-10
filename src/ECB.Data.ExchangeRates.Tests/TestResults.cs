@@ -26,6 +26,23 @@ namespace ECB.Data.ExchangeRates.Tests;
 public class TestResults
 {
 	[Fact]
+	public async Task Empty()
+	{
+		var client = new ExchangeRatesClient(
+			new CustomHttpMessageHandler(
+				_ => new HttpResponseMessage
+				{
+					Content = new StringContent(string.Empty),
+				}
+			)
+		);
+
+		var rates = await client.GetDailyAverageRatesAsync();
+
+		Assert.Empty(rates);
+	}
+
+	[Fact]
 	public async Task SingleSeriesSingleObs()
 	{
 		var client = new ExchangeRatesClient(

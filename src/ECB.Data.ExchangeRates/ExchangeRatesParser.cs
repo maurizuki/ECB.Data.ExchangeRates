@@ -49,12 +49,21 @@ public class ExchangeRatesParser : IExchangeRatesParser
 	///		parse.</param>
 	/// <returns>The currency exchange rates.</returns>
 	/// <exception cref="XmlException">
-	///     The response content does not contain a root element or
+	///     The response content does not contain a valid XML document or
 	///     does not contain the namespace of prefix 'generic'.
 	/// </exception>
 	public IEnumerable<ExchangeRate> Parse(Stream stream)
 	{
-		var document = XDocument.Load(stream);
+		XDocument document;
+		try
+		{
+			document = XDocument.Load(stream);
+		}
+		catch (XmlException e)
+		{
+			if (e.LineNumber == 0 && e.LinePosition == 0) return [];
+			throw;
+		}
 
 		var genericNamespace = document.Root!.GetNamespaceOfPrefix("generic")
 			?? throw new XmlException("Namespace of prefix 'generic' is missing.");
