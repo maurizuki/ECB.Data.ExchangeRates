@@ -12,7 +12,7 @@ Install-Package ECB.Data.ExchangeRates
 
 More options are available on the [ECB.Data.ExchangeRates page](https://www.nuget.org/packages/ECB.Data.ExchangeRates) of the NuGet Gallery website.
 
-The console application [ECB.Data.ExchangeRates.ConsoleApp](https://github.com/maurizuki/ECB.Data.ExchangeRates/tree/v2.0.0-rc.2/src/ECB.Data.ExchangeRates.ConsoleApp) (ECBEXR.exe) is intended as an example on how to use the web services client in a real scenario.
+The console application [ECB.Data.ExchangeRates.ConsoleApp](https://github.com/maurizuki/ECB.Data.ExchangeRates/tree/v2.0.0-rc.3/src/ECB.Data.ExchangeRates.ConsoleApp) (ECBEXR.exe) is intended as an example on how to use the web services client in a real scenario.
 
 ## Remarks
 
@@ -32,5 +32,5 @@ public class GoodController : ApiController
 
 ## Documentation
 
-* [ECB.Data.ExchangeRates API reference](https://github.com/maurizuki/ECB.Data.ExchangeRates/blob/v2.0.0-rc.2/docs/ECB.Data.ExchangeRates.md)
+* [ECB.Data.ExchangeRates API reference](https://github.com/maurizuki/ECB.Data.ExchangeRates/blob/v2.0.0-rc.3/docs/ECB.Data.ExchangeRates.md)
 * [Official ECB Data Portal web services documentation](https://data.ecb.europa.eu/help/api)

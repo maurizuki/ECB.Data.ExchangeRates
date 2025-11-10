@@ -20,8 +20,9 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageReleaseNotes>- Target frameworks changed to netstandard2.0, netstandard2.1
 - HTTP response body streaming
-- Request specific media type</PackageReleaseNotes>
-    <Version>2.0.0-rc.2</Version>
+- Request specific media type
+- Fix empty response handling</PackageReleaseNotes>
+    <Version>2.0.0-rc.3</Version>
   </PropertyGroup>
 
   <ItemGroup>
