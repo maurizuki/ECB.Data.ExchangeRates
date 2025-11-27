@@ -18,11 +18,8 @@
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <Description>Provides access to the EXR Dataflow (currency exchange rates) of ECB Data Portal web services (https://data.ecb.europa.eu).</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageReleaseNotes>- Target frameworks changed to netstandard2.0, netstandard2.1
-- HTTP response body streaming
-- Request specific media type
-- Fix empty response handling</PackageReleaseNotes>
-    <Version>2.0.0</Version>
+    <PackageReleaseNotes>Added method overloads with cancellation token parameter</PackageReleaseNotes>
+    <Version>2.1.0-rc.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

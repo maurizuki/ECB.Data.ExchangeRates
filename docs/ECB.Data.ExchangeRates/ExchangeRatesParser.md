@@ -1,9 +1,9 @@
 # ExchangeRatesParser class
 
-Provides a method to parse the response of an HTTP request to ECB Data Portal web services.
+Provides methods to parse the response of an HTTP request to ECB Data Portal web services.
 
 ```csharp
-public class ExchangeRatesParser : IExchangeRatesParser
+public class ExchangeRatesParser : IAsyncExchangeRatesParser, IExchangeRatesParser
 ```
 
 ## Public Members
@@ -12,10 +12,13 @@ public class ExchangeRatesParser : IExchangeRatesParser
 | --- | --- |
 | [ExchangeRatesParser](ExchangeRatesParser/ExchangeRatesParser.md)() | The default constructor. |
 | [Parse](ExchangeRatesParser/Parse.md)(…) | Parses the response of an HTTP request to ECB Data Portal web services. |
+| [ParseAsync](ExchangeRatesParser/ParseAsync.md)(…) | Parses asynchronously the response of an HTTP request to ECB Data Portal web services. |
+| static [AsyncParser](ExchangeRatesParser/AsyncParser.md) { get; } | Gets an instance of the asynchronous parser. |
 | static [Parser](ExchangeRatesParser/Parser.md) { get; } | Gets an instance of the parser. |
 
 ## See Also
 
+* interface [IAsyncExchangeRatesParser](./IAsyncExchangeRatesParser.md)
 * interface [IExchangeRatesParser](./IExchangeRatesParser.md)
 * namespace [ECB.Data.ExchangeRates](../ECB.Data.ExchangeRates.md)
 

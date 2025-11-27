@@ -1,4 +1,4 @@
-# ExchangeRatesClient.GetAnnualAverageRatesAsync method (1 of 2)
+# ExchangeRatesClient.GetAnnualAverageRatesAsync method (1 of 4)
 
 Returns the annual average exchange rates of a list of currencies for a specific year.
 
@@ -30,7 +30,7 @@ A task that represents the asynchronous operation. The task result contains the 
 
 ---
 
-# ExchangeRatesClient.GetAnnualAverageRatesAsync method (2 of 2)
+# ExchangeRatesClient.GetAnnualAverageRatesAsync method (2 of 4)
 
 Returns the annual average exchange rates of a list of currencies for a specific year range.
 
@@ -54,6 +54,75 @@ A task that represents the asynchronous operation. The task result contains the 
 | exception | condition |
 | --- | --- |
 | HttpRequestException | The response status code does not indicate success. |
+
+## See Also
+
+* class [ExchangeRate](../ExchangeRate.md)
+* class [ExchangeRatesClient](../ExchangeRatesClient.md)
+* namespace [ECB.Data.ExchangeRates](../../ECB.Data.ExchangeRates.md)
+
+---
+
+# ExchangeRatesClient.GetAnnualAverageRatesAsync method (3 of 4)
+
+Returns the annual average exchange rates of a list of currencies for a specific year.
+
+```csharp
+public Task<IEnumerable<ExchangeRate>> GetAnnualAverageRatesAsync(int year, string[] currencies, 
+    CancellationToken cancellationToken)
+```
+
+| parameter | description |
+| --- | --- |
+| year | The reference year for the exchange rates. |
+| currencies | The list of the required currencies. Leave empty to get all the available currencies. |
+| cancellationToken | A cancellation token that can be used to receive notice of cancellation. |
+
+## Return Value
+
+A task that represents the asynchronous operation. The task result contains the annual average exchange rates of a list of currencies for a specific year.
+
+## Exceptions
+
+| exception | condition |
+| --- | --- |
+| HttpRequestException | The response status code does not indicate success. |
+| OperationCanceledException | The cancellation token was canceled. |
+
+## See Also
+
+* class [ExchangeRate](../ExchangeRate.md)
+* class [ExchangeRatesClient](../ExchangeRatesClient.md)
+* namespace [ECB.Data.ExchangeRates](../../ECB.Data.ExchangeRates.md)
+
+---
+
+# ExchangeRatesClient.GetAnnualAverageRatesAsync method (4 of 4)
+
+Returns the annual average exchange rates of a list of currencies for a specific year range.
+
+```csharp
+public Task<IEnumerable<ExchangeRate>> GetAnnualAverageRatesAsync(int startYear, int endYear, 
+    string[] currencies, CancellationToken cancellationToken)
+```
+
+| parameter | description |
+| --- | --- |
+| startYear | The start year of the range for the exchange rates. |
+| endYear | The end year of the range for the exchange rates. |
+| currencies | The list of the required currencies. Leave empty to get all the available currencies. |
+| cancellationToken | A cancellation token that can be used to receive notice of cancellation. |
+
+## Return Value
+
+A task that represents the asynchronous operation. The task result contains the annual average exchange rates of a list of currencies for a specific year range.
+
+## Exceptions
+
+| exception | condition |
+| --- | --- |
+| HttpRequestException | The response status code does not indicate success. |
+| OperationCanceledException | The cancellation token was canceled. |
 
 ## See Also
 
