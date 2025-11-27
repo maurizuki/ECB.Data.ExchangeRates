@@ -33,7 +33,16 @@ public class ExchangeRatesClient : HttpClient
 
 	private const string DefaultMediaType = "application/vnd.sdmx.genericdata+xml;version=2.1";
 
-	private readonly IExchangeRatesParser _parser;
+	private readonly IAsyncExchangeRatesParser _parser;
+
+	private class Adapter(IExchangeRatesParser parser) : IAsyncExchangeRatesParser
+	{
+		public Task<IEnumerable<ExchangeRate>> ParseAsync(Stream stream, CancellationToken cancellationToken)
+		{
+			cancellationToken.ThrowIfCancellationRequested();
+			return Task.FromResult(parser.Parse(stream));
+		}
+	}
 
 	/// <summary>
 	///     Initializes a new instance of the ExchangeRatesClient class using a
@@ -51,7 +60,9 @@ public class ExchangeRatesClient : HttpClient
 	///     The HttpMessageHandler responsible for processing the HTTP response
 	///     messages.
 	/// </param>
-	/// <exception cref="ArgumentNullException"><paramref name="handler"/> is <c>null</c>.</exception>
+	/// <exception cref="ArgumentNullException">
+	///		<paramref name="handler"/> is <c>null</c>.
+	///	</exception>
 	public ExchangeRatesClient(HttpMessageHandler handler) : this(handler, true)
 	{
 	}
@@ -70,9 +81,11 @@ public class ExchangeRatesClient : HttpClient
 	///     ExchangeRatesClient.Dispose; <c>false</c> if you intend to reuse the inner
 	///     handler.
 	/// </param>
-	/// <exception cref="ArgumentNullException"><paramref name="handler"/> is <c>null</c>.</exception>
+	/// <exception cref="ArgumentNullException">
+	///		<paramref name="handler"/> is <c>null</c>.
+	///	</exception>
 	public ExchangeRatesClient(HttpMessageHandler handler, bool disposeHandler)
-		: this(handler, disposeHandler, ExchangeRatesParser.Parser)
+		: this(handler, disposeHandler, ExchangeRatesParser.AsyncParser)
 	{
 	}
 
@@ -93,11 +106,35 @@ public class ExchangeRatesClient : HttpClient
 	/// <param name="parser">
 	///		A custom parser for the HTTP response content.
 	/// </param>
-	/// <exception cref="ArgumentNullException"><paramref name="handler"/> is <c>null</c> or <paramref name="parser"/> is <c>null</c>.</exception>
-	public ExchangeRatesClient(
-		HttpMessageHandler handler,
-		bool disposeHandler,
-		IExchangeRatesParser parser)
+	/// <exception cref="ArgumentNullException">
+	///		<paramref name="handler"/> is <c>null</c> or <paramref name="parser"/> is <c>null</c>.
+	///	</exception>
+	public ExchangeRatesClient(HttpMessageHandler handler, bool disposeHandler, IExchangeRatesParser parser)
+		: this(handler, disposeHandler, new Adapter(parser ?? throw new ArgumentNullException(nameof(parser))))
+	{
+	}
+
+	/// <summary>
+	///     Initializes a new instance of the ExchangeRatesClient class with the
+	///     provided handler, and specifies whether that handler should be disposed
+	///     when this instance is disposed.
+	/// </summary>
+	/// <param name="handler">
+	///     The HttpMessageHandler responsible for processing the HTTP response
+	///     messages.
+	/// </param>
+	/// <param name="disposeHandler">
+	///     <c>true</c> if the inner handler should be disposed of by
+	///     ExchangeRatesClient.Dispose; <c>false</c> if you intend to reuse the inner
+	///     handler.
+	/// </param>
+	/// <param name="parser">
+	///		A custom asynchronous parser for the HTTP response content.
+	/// </param>
+	/// <exception cref="ArgumentNullException">
+	///		<paramref name="handler"/> is <c>null</c> or <paramref name="parser"/> is <c>null</c>.
+	///	</exception>
+	public ExchangeRatesClient(HttpMessageHandler handler, bool disposeHandler, IAsyncExchangeRatesParser parser)
 		: base(handler, disposeHandler)
 	{
 		_parser = parser ?? throw new ArgumentNullException(nameof(parser));
@@ -122,7 +159,34 @@ public class ExchangeRatesClient : HttpClient
 	/// </exception>
 	public async Task<IEnumerable<ExchangeRate>> GetDailyAverageRatesAsync(params string[] currencies)
 	{
-		return await GetExchangeRatesAsync(MEASUREMENT_FREQUENCY_DAILY, currencies, "&lastNObservations=1");
+		return await GetDailyAverageRatesAsync(currencies, CancellationToken.None);
+	}
+
+	/// <summary>
+	///     Returns the latest available daily average exchange rates of a list of
+	///     currencies.
+	/// </summary>
+	/// <param name="currencies">
+	///     The list of the required currencies. Leave empty to get all the
+	///     available currencies.
+	/// </param>
+	/// <param name="cancellationToken">A cancellation token that can be
+	///		used to receive notice of cancellation.
+	///	</param>
+	/// <returns>
+	///     A task that represents the asynchronous operation. The task result contains
+	///     the latest available daily average exchange rates of a list of currencies.
+	/// </returns>
+	/// <exception cref="HttpRequestException">
+	///     The response status code does not indicate success.
+	/// </exception>
+	/// <exception cref="OperationCanceledException">
+	///		The cancellation token was canceled.
+	///	</exception>
+	public async Task<IEnumerable<ExchangeRate>> GetDailyAverageRatesAsync(string[] currencies, CancellationToken cancellationToken)
+	{
+		if (currencies == null) throw new ArgumentNullException(nameof(currencies));
+		return await GetExchangeRatesAsync(MEASUREMENT_FREQUENCY_DAILY, currencies, "&lastNObservations=1", cancellationToken);
 	}
 
 	/// <summary>
@@ -144,7 +208,35 @@ public class ExchangeRatesClient : HttpClient
 	/// </exception>
 	public async Task<IEnumerable<ExchangeRate>> GetDailyAverageRatesAsync(DateTime date, params string[] currencies)
 	{
-		return await GetDailyAverageRatesAsync(date, date, currencies);
+		return await GetDailyAverageRatesAsync(date, date, currencies, CancellationToken.None);
+	}
+
+	/// <summary>
+	///     Returns the daily average exchange rates of a list of currencies for a
+	///     specific date.
+	/// </summary>
+	/// <param name="date">The reference date for the exchange rates.</param>
+	/// <param name="currencies">
+	///     The list of the required currencies. Leave empty to get all the
+	///     available currencies.
+	/// </param>
+	/// <param name="cancellationToken">A cancellation token that can be
+	///		used to receive notice of cancellation.
+	///	</param>
+	/// <returns>
+	///     A task that represents the asynchronous operation. The task result contains
+	///     the daily average exchange rates of a list of currencies for a specific
+	///     date.
+	/// </returns>
+	/// <exception cref="HttpRequestException">
+	///     The response status code does not indicate success.
+	/// </exception>
+	/// <exception cref="OperationCanceledException">
+	///		The cancellation token was canceled.
+	///	</exception>
+	public async Task<IEnumerable<ExchangeRate>> GetDailyAverageRatesAsync(DateTime date, string[] currencies, CancellationToken cancellationToken)
+	{
+		return await GetDailyAverageRatesAsync(date, date, currencies, cancellationToken);
 	}
 
 	/// <summary>
@@ -169,7 +261,39 @@ public class ExchangeRatesClient : HttpClient
 	/// </exception>
 	public async Task<IEnumerable<ExchangeRate>> GetDailyAverageRatesAsync(DateTime startDate, DateTime endDate, params string[] currencies)
 	{
-		return await GetExchangeRatesAsync(MEASUREMENT_FREQUENCY_DAILY, currencies, $"&startPeriod={startDate:yyyy-MM-dd}&endPeriod={endDate:yyyy-MM-dd}");
+		return await GetDailyAverageRatesAsync(startDate, endDate, currencies, CancellationToken.None);
+	}
+
+	/// <summary>
+	///     Returns the daily average exchange rates of a list of currencies for a
+	///     specific date range.
+	/// </summary>
+	/// <param name="startDate">
+	///     The start date of the range for the exchange rates.
+	/// </param>
+	/// <param name="endDate">The end date of the range for the exchange rates.</param>
+	/// <param name="currencies">
+	///     The list of the required currencies. Leave empty to get all the
+	///     available currencies.
+	/// </param>
+	/// <param name="cancellationToken">A cancellation token that can be
+	///		used to receive notice of cancellation.
+	///	</param>
+	/// <returns>
+	///     A task that represents the asynchronous operation. The task result contains
+	///     the daily average exchange rates of a list of currencies for a specific date
+	///     range.
+	/// </returns>
+	/// <exception cref="HttpRequestException">
+	///     The response status code does not indicate success.
+	/// </exception>
+	/// <exception cref="OperationCanceledException">
+	///		The cancellation token was canceled.
+	///	</exception>
+	public async Task<IEnumerable<ExchangeRate>> GetDailyAverageRatesAsync(DateTime startDate, DateTime endDate, string[] currencies, CancellationToken cancellationToken)
+	{
+		if (currencies == null) throw new ArgumentNullException(nameof(currencies));
+		return await GetExchangeRatesAsync(MEASUREMENT_FREQUENCY_DAILY, currencies, $"&startPeriod={startDate:yyyy-MM-dd}&endPeriod={endDate:yyyy-MM-dd}", cancellationToken);
 	}
 
 	/// <summary>
@@ -192,7 +316,36 @@ public class ExchangeRatesClient : HttpClient
 	/// </exception>
 	public async Task<IEnumerable<ExchangeRate>> GetMonthlyAverageRatesAsync(int month, int year, params string[] currencies)
 	{
-		return await GetMonthlyAverageRatesAsync(month, year, month, year, currencies);
+		return await GetMonthlyAverageRatesAsync(month, year, month, year, currencies, CancellationToken.None);
+	}
+
+	/// <summary>
+	///     Returns the monthly average exchange rates of a list of currencies for a
+	///     specific month.
+	/// </summary>
+	/// <param name="month">The reference month for the exchange rates (1-12).</param>
+	/// <param name="year">The reference year for the exchange rates.</param>
+	/// <param name="currencies">
+	///     The list of the required currencies. Leave empty to get all the
+	///     available currencies.
+	/// </param>
+	/// <param name="cancellationToken">A cancellation token that can be
+	///		used to receive notice of cancellation.
+	///	</param>
+	/// <returns>
+	///     A task that represents the asynchronous operation. The task result contains
+	///     the monthly average exchange rates of a list of currencies for a specific
+	///     month.
+	/// </returns>
+	/// <exception cref="HttpRequestException">
+	///     The response status code does not indicate success.
+	/// </exception>
+	/// <exception cref="OperationCanceledException">
+	///		The cancellation token was canceled.
+	///	</exception>
+	public async Task<IEnumerable<ExchangeRate>> GetMonthlyAverageRatesAsync(int month, int year, string[] currencies, CancellationToken cancellationToken)
+	{
+		return await GetMonthlyAverageRatesAsync(month, year, month, year, currencies, cancellationToken);
 	}
 
 	/// <summary>
@@ -223,7 +376,45 @@ public class ExchangeRatesClient : HttpClient
 	/// </exception>
 	public async Task<IEnumerable<ExchangeRate>> GetMonthlyAverageRatesAsync(int startMonth, int startYear, int endMonth, int endYear, params string[] currencies)
 	{
-		return await GetExchangeRatesAsync(MEASUREMENT_FREQUENCY_MONTHLY, currencies, $"&startPeriod={startYear:D4}-{startMonth:D2}&endPeriod={endYear:D4}-{endMonth:D2}");
+		return await GetMonthlyAverageRatesAsync(startMonth, startYear, endMonth, endYear, currencies, CancellationToken.None);
+	}
+
+	/// <summary>
+	///     Returns the monthly average exchange rates of a list of currencies for a
+	///     specific month range.
+	/// </summary>
+	/// <param name="startMonth">
+	///     The start month of the range for the exchange rates (1-12).
+	/// </param>
+	/// <param name="startYear">
+	///     The start year of the range for the exchange rates.
+	/// </param>
+	/// <param name="endMonth">
+	///     The end month of the range for the exchange rates (1-12).
+	/// </param>
+	/// <param name="endYear">The end year of the range for the exchange rates.</param>
+	/// <param name="currencies">
+	///     The list of the required currencies. Leave empty to get all the
+	///     available currencies.
+	/// </param>
+	/// <param name="cancellationToken">A cancellation token that can be
+	///		used to receive notice of cancellation.
+	///	</param>
+	/// <returns>
+	///     A task that represents the asynchronous operation. The task result contains
+	///     the monthly average exchange rates of a list of currencies for a specific
+	///     month range.
+	/// </returns>
+	/// <exception cref="HttpRequestException">
+	///     The response status code does not indicate success.
+	/// </exception>
+	/// <exception cref="OperationCanceledException">
+	///		The cancellation token was canceled.
+	///	</exception>
+	public async Task<IEnumerable<ExchangeRate>> GetMonthlyAverageRatesAsync(int startMonth, int startYear, int endMonth, int endYear, string[] currencies, CancellationToken cancellationToken)
+	{
+		if (currencies == null) throw new ArgumentNullException(nameof(currencies));
+		return await GetExchangeRatesAsync(MEASUREMENT_FREQUENCY_MONTHLY, currencies, $"&startPeriod={startYear:D4}-{startMonth:D2}&endPeriod={endYear:D4}-{endMonth:D2}", cancellationToken);
 	}
 
 	/// <summary>
@@ -245,7 +436,35 @@ public class ExchangeRatesClient : HttpClient
 	/// </exception>
 	public async Task<IEnumerable<ExchangeRate>> GetAnnualAverageRatesAsync(int year, params string[] currencies)
 	{
-		return await GetAnnualAverageRatesAsync(year, year, currencies);
+		return await GetAnnualAverageRatesAsync(year, year, currencies, CancellationToken.None);
+	}
+
+	/// <summary>
+	///     Returns the annual average exchange rates of a list of currencies for a
+	///     specific year.
+	/// </summary>
+	/// <param name="year">The reference year for the exchange rates.</param>
+	/// <param name="currencies">
+	///     The list of the required currencies. Leave empty to get all the
+	///     available currencies.
+	/// </param>
+	/// <param name="cancellationToken">A cancellation token that can be
+	///		used to receive notice of cancellation.
+	///	</param>
+	/// <returns>
+	///     A task that represents the asynchronous operation. The task result contains
+	///     the annual average exchange rates of a list of currencies for a specific
+	///     year.
+	/// </returns>
+	/// <exception cref="HttpRequestException">
+	///     The response status code does not indicate success.
+	/// </exception>
+	/// <exception cref="OperationCanceledException">
+	///		The cancellation token was canceled.
+	///	</exception>
+	public async Task<IEnumerable<ExchangeRate>> GetAnnualAverageRatesAsync(int year, string[] currencies, CancellationToken cancellationToken)
+	{
+		return await GetAnnualAverageRatesAsync(year, year, currencies, cancellationToken);
 	}
 
 	/// <summary>
@@ -270,17 +489,53 @@ public class ExchangeRatesClient : HttpClient
 	/// </exception>
 	public async Task<IEnumerable<ExchangeRate>> GetAnnualAverageRatesAsync(int startYear, int endYear, params string[] currencies)
 	{
-		return await GetExchangeRatesAsync(MEASUREMENT_FREQUENCY_ANNUAL, currencies, $"&startPeriod={startYear:D4}&endPeriod={endYear:D4}");
+		return await GetAnnualAverageRatesAsync(startYear, endYear, currencies, CancellationToken.None);
+	}
+
+	/// <summary>
+	///     Returns the annual average exchange rates of a list of currencies for a
+	///     specific year range.
+	/// </summary>
+	/// <param name="startYear">
+	///     The start year of the range for the exchange rates.
+	/// </param>
+	/// <param name="endYear">The end year of the range for the exchange rates.</param>
+	/// <param name="currencies">
+	///     The list of the required currencies. Leave empty to get all the
+	///     available currencies.
+	/// </param>
+	/// <param name="cancellationToken">A cancellation token that can be
+	///		used to receive notice of cancellation.
+	///	</param>
+	/// <returns>
+	///     A task that represents the asynchronous operation. The task result contains
+	///     the annual average exchange rates of a list of currencies for a specific
+	///     year range.
+	/// </returns>
+	/// <exception cref="HttpRequestException">
+	///     The response status code does not indicate success.
+	/// </exception>
+	/// <exception cref="OperationCanceledException">
+	///		The cancellation token was canceled.
+	///	</exception>
+	public async Task<IEnumerable<ExchangeRate>> GetAnnualAverageRatesAsync(int startYear, int endYear, string[] currencies, CancellationToken cancellationToken)
+	{
+		if (currencies == null) throw new ArgumentNullException(nameof(currencies));
+		return await GetExchangeRatesAsync(MEASUREMENT_FREQUENCY_ANNUAL, currencies, $"&startPeriod={startYear:D4}&endPeriod={endYear:D4}", cancellationToken);
 	}
 
 	private const string MEASUREMENT_FREQUENCY_DAILY = "D";
 	private const string MEASUREMENT_FREQUENCY_MONTHLY = "M";
 	private const string MEASUREMENT_FREQUENCY_ANNUAL = "A";
 
-	private async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(string frequency, string[] currencies, string parameters)
+	private async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(string frequency, string[] currencies, string parameters, CancellationToken cancellationToken)
 	{
-		var response = (await GetAsync($"{frequency}.{string.Join("+", currencies)}.EUR.SP00.A?detail=dataOnly{parameters}", HttpCompletionOption.ResponseHeadersRead)).EnsureSuccessStatusCode();
-		using var stream = await response.Content.ReadAsStreamAsync();
-		return _parser.Parse(stream);
+		var response = (await GetAsync($"{frequency}.{string.Join("+", currencies)}.EUR.SP00.A?detail=dataOnly{parameters}", HttpCompletionOption.ResponseHeadersRead, cancellationToken)).EnsureSuccessStatusCode();
+		using var stream = await response.Content.ReadAsStreamAsync(
+#if NET5_0_OR_GREATER
+			cancellationToken
+#endif
+		);
+		return await _parser.ParseAsync(stream, cancellationToken);
 	}
 }

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ECB.Data.ExchangeRates.ConsoleApp": {
+      "commandName": "Project",
+      "commandLineArgs": "latest"
+    }
+  }
+}
