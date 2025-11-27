@@ -28,10 +28,10 @@ using System.Xml.Linq;
 namespace ECB.Data.ExchangeRates;
 
 /// <summary>
-///     Provides a method to parse the response of an HTTP request
+///     Provides methods to parse the response of an HTTP request
 ///     to ECB Data Portal web services.
 /// </summary>
-public class ExchangeRatesParser : IExchangeRatesParser
+public class ExchangeRatesParser : IExchangeRatesParser, IAsyncExchangeRatesParser
 {
 	private static readonly ExchangeRatesParser _parser = new();
 
@@ -40,6 +40,12 @@ public class ExchangeRatesParser : IExchangeRatesParser
 	/// </summary>
 	/// <returns>An instance of the parser.</returns>
 	public static IExchangeRatesParser Parser => _parser;
+
+	/// <summary>
+	/// Gets an instance of the asynchronous parser.
+	/// </summary>
+	/// <returns>An instance of the asynchronous parser.</returns>
+	public static IAsyncExchangeRatesParser AsyncParser => _parser;
 
 	/// <summary>
 	///     Parses the response of an HTTP request to ECB Data
@@ -65,7 +71,50 @@ public class ExchangeRatesParser : IExchangeRatesParser
 			throw;
 		}
 
-		var genericNamespace = document.Root!.GetNamespaceOfPrefix("generic")
+		return Parse(document);
+	}
+
+	/// <summary>
+	///     Parses asynchronously the response of an HTTP request to ECB Data
+	///     Portal web services.
+	/// </summary>
+	/// <param name="stream">The stream that contains the XML response to
+	///		parse.</param>
+	/// <param name="cancellationToken">A cancellation token that can be
+	///		used to receive notice of cancellation.</param>
+	/// <returns>A task that represents the asynchronous operation.
+	///		The task result contains the currency exchange rates.</returns>
+	/// <exception cref="OperationCanceledException">
+	///		The cancellation token was canceled.
+	///	</exception>
+	/// <exception cref="XmlException">
+	///     The response content does not contain a valid XML document or
+	///     does not contain the namespace of prefix 'generic'.
+	/// </exception>
+	public async Task<IEnumerable<ExchangeRate>> ParseAsync(Stream stream, CancellationToken cancellationToken)
+	{
+#if NETSTANDARD2_1_OR_GREATER
+		XDocument document;
+		try
+		{
+			document = await XDocument.LoadAsync(stream, LoadOptions.None, cancellationToken);
+		}
+		catch (XmlException e)
+		{
+			if (e.LineNumber == 0 && e.LinePosition == 0) return [];
+			throw;
+		}
+
+		return Parse(document);
+#else
+		cancellationToken.ThrowIfCancellationRequested();
+		return Parse(stream);
+#endif
+	}
+
+	private IEnumerable<ExchangeRate> Parse(XDocument document)
+	{
+		var genericNamespace = document.Root.GetNamespaceOfPrefix("generic")
 			?? throw new XmlException("Namespace of prefix 'generic' is missing.");
 
 		var seriesKeyValueName = XName.Get("Value", genericNamespace.NamespaceName);
@@ -79,7 +128,7 @@ public class ExchangeRatesParser : IExchangeRatesParser
 				{
 					var seriesKeyValues = a.Descendants(seriesKeyValueName)
 						.ToDictionary(
-							b => b.Attribute("id")!.Value,
+							b => b.Attribute("id").Value,
 							b => b.Attribute("value")?.Value
 						);
 					return new
