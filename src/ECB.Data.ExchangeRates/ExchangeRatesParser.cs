@@ -71,7 +71,7 @@ public class ExchangeRatesParser : IExchangeRatesParser, IAsyncExchangeRatesPars
 			throw;
 		}
 
-		return ParseDocument(document);
+		return Parse(document);
 	}
 
 	/// <summary>
@@ -105,14 +105,14 @@ public class ExchangeRatesParser : IExchangeRatesParser, IAsyncExchangeRatesPars
 			throw;
 		}
 
-		return ParseDocument(document);
+		return Parse(document);
 #else
 		cancellationToken.ThrowIfCancellationRequested();
 		return Parse(stream);
 #endif
 	}
 
-	private static IEnumerable<ExchangeRate> ParseDocument(XDocument document)
+	private static IEnumerable<ExchangeRate> Parse(XDocument document)
 	{
 		var genericNamespace = document.Root?.GetNamespaceOfPrefix("generic")
 		                       ?? throw new XmlException("The namespace of the prefix 'generic' is missing.");
