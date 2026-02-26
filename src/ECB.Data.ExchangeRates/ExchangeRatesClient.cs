@@ -545,11 +545,15 @@ public class ExchangeRatesClient : HttpClient
 	private async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(string frequency, string[] currencies, string parameters, CancellationToken cancellationToken)
 	{
 		var response = (await GetAsync($"{frequency}.{string.Join("+", currencies)}.EUR.SP00.A?detail=dataOnly{parameters}", HttpCompletionOption.ResponseHeadersRead, cancellationToken)).EnsureSuccessStatusCode();
-		using var stream = await response.Content.ReadAsStreamAsync(
-#if NET5_0_OR_GREATER
-			cancellationToken
+		// await using uses IAsyncDisposable instead of IDisposable
+#if NETSTANDARD2_1 || NET5_0_OR_GREATER
+		await
 #endif
-		);
+			using var stream = await response.Content.ReadAsStreamAsync(
+#if NET5_0_OR_GREATER
+				cancellationToken
+#endif
+			);
 		return await _parser.ParseAsync(stream, cancellationToken);
 	}
 }
