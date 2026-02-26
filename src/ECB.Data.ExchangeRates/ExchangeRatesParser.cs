@@ -93,7 +93,7 @@ public class ExchangeRatesParser : IExchangeRatesParser, IAsyncExchangeRatesPars
 	/// </exception>
 	public async Task<IEnumerable<ExchangeRate>> ParseAsync(Stream stream, CancellationToken cancellationToken)
 	{
-#if NETSTANDARD2_1_OR_GREATER
+#if NETSTANDARD2_1 || NET5_0_OR_GREATER
 		XDocument document;
 		try
 		{
