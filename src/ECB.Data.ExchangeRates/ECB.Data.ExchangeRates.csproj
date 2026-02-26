@@ -16,6 +16,8 @@
     <PackageTags>currency currency-exchange currency-rates exchange-rates currency-exchange-rates ecb european-central-bank</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <Description>Provides access to the EXR Dataflow (currency exchange rates) of ECB Data Portal web services (https://data.ecb.europa.eu).</Description>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageReleaseNotes>Added method overloads with cancellation token parameter</PackageReleaseNotes>
