@@ -172,7 +172,7 @@ public class ExchangeRatesParser : IExchangeRatesParser, IAsyncExchangeRatesPars
 	}
 }
 
-#if !NETSTANDARD2_1_OR_GREATER
+#if !NETSTANDARD2_1 && !NET5_0_OR_GREATER
 internal static class Extensions
 {
 	public static TValue? GetValueOrDefault<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dictionary, TKey key)
