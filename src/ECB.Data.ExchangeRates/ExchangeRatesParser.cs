@@ -114,7 +114,7 @@ public class ExchangeRatesParser : IExchangeRatesParser, IAsyncExchangeRatesPars
 
 	private static IEnumerable<ExchangeRate> Parse(XDocument document)
 	{
-		var genericNamespace = document.Root!.GetNamespaceOfPrefix("generic")
+		var genericNamespace = document.Root?.GetNamespaceOfPrefix("generic")
 		                       ?? throw new XmlException("The namespace of the prefix 'generic' is missing.");
 
 		var seriesKeyValueName = XName.Get("Value", genericNamespace.NamespaceName);
@@ -128,7 +128,7 @@ public class ExchangeRatesParser : IExchangeRatesParser, IAsyncExchangeRatesPars
 				{
 					var seriesKeyValues = a.Descendants(seriesKeyValueName)
 						.ToDictionary(
-							b => b.Attribute("id")!.Value,
+							b => b.Attribute("id")?.Value ?? throw new ArgumentException("Cannot find series key."),
 							b => b.Attribute("value")?.Value
 						);
 					return new
