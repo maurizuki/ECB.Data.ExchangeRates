@@ -30,7 +30,7 @@ namespace ECB.Data.ExchangeRates;
 public interface IAsyncExchangeRatesParser
 {
 	/// <summary>
-	///     Parses asynchronously the response of an HTTP request to ECB Data
+	///     Asynchronously parses the response of an HTTP request to ECB Data
 	///     Portal web services.
 	/// </summary>
 	/// <param name="stream">The stream that contains the XML response to

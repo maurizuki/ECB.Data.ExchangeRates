@@ -56,7 +56,7 @@ public class ExchangeRatesParser : IExchangeRatesParser, IAsyncExchangeRatesPars
 	/// <returns>The currency exchange rates.</returns>
 	/// <exception cref="XmlException">
 	///     The response content does not contain a valid XML document or
-	///     does not contain the namespace of prefix 'generic'.
+	///     does not contain the namespace prefix 'generic'.
 	/// </exception>
 	public IEnumerable<ExchangeRate> Parse(Stream stream)
 	{
@@ -75,7 +75,7 @@ public class ExchangeRatesParser : IExchangeRatesParser, IAsyncExchangeRatesPars
 	}
 
 	/// <summary>
-	///     Parses asynchronously the response of an HTTP request to ECB Data
+	///     Asynchronously parses the response of an HTTP request to ECB Data
 	///     Portal web services.
 	/// </summary>
 	/// <param name="stream">The stream that contains the XML response to
@@ -89,7 +89,7 @@ public class ExchangeRatesParser : IExchangeRatesParser, IAsyncExchangeRatesPars
 	///	</exception>
 	/// <exception cref="XmlException">
 	///     The response content does not contain a valid XML document or
-	///     does not contain the namespace of prefix 'generic'.
+	///     does not contain the namespace prefix 'generic'.
 	/// </exception>
 	public async Task<IEnumerable<ExchangeRate>> ParseAsync(Stream stream, CancellationToken cancellationToken)
 	{
@@ -115,7 +115,7 @@ public class ExchangeRatesParser : IExchangeRatesParser, IAsyncExchangeRatesPars
 	private static IEnumerable<ExchangeRate> Parse(XDocument document)
 	{
 		var genericNamespace = document.Root!.GetNamespaceOfPrefix("generic")
-			?? throw new XmlException("Namespace of prefix 'generic' is missing.");
+		                       ?? throw new XmlException("The namespace of the prefix 'generic' is missing.");
 
 		var seriesKeyValueName = XName.Get("Value", genericNamespace.NamespaceName);
 		var obsName = XName.Get("Obs", genericNamespace.NamespaceName);
