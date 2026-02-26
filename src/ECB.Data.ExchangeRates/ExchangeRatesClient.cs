@@ -292,7 +292,12 @@ public class ExchangeRatesClient : HttpClient
 	///	</exception>
 	public async Task<IEnumerable<ExchangeRate>> GetDailyAverageRatesAsync(DateTime startDate, DateTime endDate, string[] currencies, CancellationToken cancellationToken)
 	{
+#if NET8_0_OR_GREATER
+		ArgumentNullException.ThrowIfNull(currencies);		
+#else
 		if (currencies == null) throw new ArgumentNullException(nameof(currencies));
+#endif
+		
 		return await GetExchangeRatesAsync(MEASUREMENT_FREQUENCY_DAILY, currencies, $"&startPeriod={startDate:yyyy-MM-dd}&endPeriod={endDate:yyyy-MM-dd}", cancellationToken);
 	}
 
@@ -413,7 +418,11 @@ public class ExchangeRatesClient : HttpClient
 	///	</exception>
 	public async Task<IEnumerable<ExchangeRate>> GetMonthlyAverageRatesAsync(int startMonth, int startYear, int endMonth, int endYear, string[] currencies, CancellationToken cancellationToken)
 	{
+#if NET8_0_OR_GREATER
+		ArgumentNullException.ThrowIfNull(currencies);		
+#else
 		if (currencies == null) throw new ArgumentNullException(nameof(currencies));
+#endif
 		return await GetExchangeRatesAsync(MEASUREMENT_FREQUENCY_MONTHLY, currencies, $"&startPeriod={startYear:D4}-{startMonth:D2}&endPeriod={endYear:D4}-{endMonth:D2}", cancellationToken);
 	}
 
@@ -520,7 +529,12 @@ public class ExchangeRatesClient : HttpClient
 	///	</exception>
 	public async Task<IEnumerable<ExchangeRate>> GetAnnualAverageRatesAsync(int startYear, int endYear, string[] currencies, CancellationToken cancellationToken)
 	{
+#if NET8_0_OR_GREATER
+		ArgumentNullException.ThrowIfNull(currencies);
+#else
 		if (currencies == null) throw new ArgumentNullException(nameof(currencies));
+#endif
+		
 		return await GetExchangeRatesAsync(MEASUREMENT_FREQUENCY_ANNUAL, currencies, $"&startPeriod={startYear:D4}&endPeriod={endYear:D4}", cancellationToken);
 	}
 
