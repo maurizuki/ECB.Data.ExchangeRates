@@ -292,7 +292,12 @@ public class ExchangeRatesClient : HttpClient
 	///	</exception>
 	public async Task<IEnumerable<ExchangeRate>> GetDailyAverageRatesAsync(DateTime startDate, DateTime endDate, string[] currencies, CancellationToken cancellationToken)
 	{
+#if NET8_0_OR_GREATER
+		ArgumentNullException.ThrowIfNull(currencies);		
+#else
 		if (currencies == null) throw new ArgumentNullException(nameof(currencies));
+#endif
+		
 		return await GetExchangeRatesAsync(MEASUREMENT_FREQUENCY_DAILY, currencies, $"&startPeriod={startDate:yyyy-MM-dd}&endPeriod={endDate:yyyy-MM-dd}", cancellationToken);
 	}
 
@@ -413,7 +418,11 @@ public class ExchangeRatesClient : HttpClient
 	///	</exception>
 	public async Task<IEnumerable<ExchangeRate>> GetMonthlyAverageRatesAsync(int startMonth, int startYear, int endMonth, int endYear, string[] currencies, CancellationToken cancellationToken)
 	{
+#if NET8_0_OR_GREATER
+		ArgumentNullException.ThrowIfNull(currencies);		
+#else
 		if (currencies == null) throw new ArgumentNullException(nameof(currencies));
+#endif
 		return await GetExchangeRatesAsync(MEASUREMENT_FREQUENCY_MONTHLY, currencies, $"&startPeriod={startYear:D4}-{startMonth:D2}&endPeriod={endYear:D4}-{endMonth:D2}", cancellationToken);
 	}
 
@@ -520,7 +529,12 @@ public class ExchangeRatesClient : HttpClient
 	///	</exception>
 	public async Task<IEnumerable<ExchangeRate>> GetAnnualAverageRatesAsync(int startYear, int endYear, string[] currencies, CancellationToken cancellationToken)
 	{
+#if NET8_0_OR_GREATER
+		ArgumentNullException.ThrowIfNull(currencies);
+#else
 		if (currencies == null) throw new ArgumentNullException(nameof(currencies));
+#endif
+		
 		return await GetExchangeRatesAsync(MEASUREMENT_FREQUENCY_ANNUAL, currencies, $"&startPeriod={startYear:D4}&endPeriod={endYear:D4}", cancellationToken);
 	}
 
@@ -531,11 +545,15 @@ public class ExchangeRatesClient : HttpClient
 	private async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(string frequency, string[] currencies, string parameters, CancellationToken cancellationToken)
 	{
 		var response = (await GetAsync($"{frequency}.{string.Join("+", currencies)}.EUR.SP00.A?detail=dataOnly{parameters}", HttpCompletionOption.ResponseHeadersRead, cancellationToken)).EnsureSuccessStatusCode();
-		using var stream = await response.Content.ReadAsStreamAsync(
-#if NET5_0_OR_GREATER
-			cancellationToken
+		// await using uses IAsyncDisposable instead of IDisposable
+#if NETSTANDARD2_1 || NET5_0_OR_GREATER
+		await
 #endif
-		);
+			using var stream = await response.Content.ReadAsStreamAsync(
+#if NET5_0_OR_GREATER
+				cancellationToken
+#endif
+			);
 		return await _parser.ParseAsync(stream, cancellationToken);
 	}
 }
