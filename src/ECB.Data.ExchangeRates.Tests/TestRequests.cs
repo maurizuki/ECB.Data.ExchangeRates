@@ -50,7 +50,7 @@ public class TestRequests
 			Parser
 		);
 
-		await client.GetDailyAverageRatesAsync(currencies);
+		await client.GetDailyAverageRatesAsync(currencies, TestContext.Current.CancellationToken);
 	}
 
 	[Theory]
@@ -74,7 +74,7 @@ public class TestRequests
 			Parser
 		);
 
-		await client.GetDailyAverageRatesAsync(new DateTime(2002, 1, 2), currencies);
+		await client.GetDailyAverageRatesAsync(new DateTime(2002, 1, 2), currencies, TestContext.Current.CancellationToken);
 	}
 
 	[Theory]
@@ -98,11 +98,12 @@ public class TestRequests
 			Parser
 		);
 
-		await client.GetDailyAverageRatesAsync(
-			new DateTime(2002, 1, 2),
-			new DateTime(2003, 12, 31),
-			currencies
-		);
+		await client.GetDailyAverageRatesAsync(new DateTime(2002,
+				1, 2),
+			new DateTime(2003,
+				12, 31),
+			currencies,
+			TestContext.Current.CancellationToken);
 	}
 
 	[Theory]
@@ -126,7 +127,7 @@ public class TestRequests
 			Parser
 		);
 
-		await client.GetMonthlyAverageRatesAsync(1, 2002, currencies);
+		await client.GetMonthlyAverageRatesAsync(1, 2002, currencies, TestContext.Current.CancellationToken);
 	}
 
 	[Theory]
@@ -150,7 +151,7 @@ public class TestRequests
 			Parser
 		);
 
-		await client.GetMonthlyAverageRatesAsync(1, 2002, 12, 2003, currencies);
+		await client.GetMonthlyAverageRatesAsync(1, 2002, 12, 2003, currencies, TestContext.Current.CancellationToken);
 	}
 
 	[Theory]
@@ -174,7 +175,7 @@ public class TestRequests
 			Parser
 		);
 
-		await client.GetAnnualAverageRatesAsync(2002, currencies);
+		await client.GetAnnualAverageRatesAsync(2002, currencies, TestContext.Current.CancellationToken);
 	}
 
 	[Theory]
@@ -198,7 +199,7 @@ public class TestRequests
 			Parser
 		);
 
-		await client.GetAnnualAverageRatesAsync(2002, 2003, currencies);
+		await client.GetAnnualAverageRatesAsync(2002, 2003, currencies, TestContext.Current.CancellationToken);
 	}
 }
 

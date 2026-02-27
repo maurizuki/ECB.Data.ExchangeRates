@@ -37,7 +37,7 @@ public class TestResults
 			)
 		);
 
-		var rates = await client.GetDailyAverageRatesAsync();
+		var rates = await client.GetDailyAverageRatesAsync([], TestContext.Current.CancellationToken);
 
 		Assert.Empty(rates);
 	}
@@ -73,7 +73,7 @@ public class TestResults
 			)
 		);
 
-		var rates = await client.GetDailyAverageRatesAsync();
+		var rates = await client.GetDailyAverageRatesAsync([], TestContext.Current.CancellationToken);
 
 		var rate = Assert.Single(rates);
 		Assert.Equal("D", rate.Frequency);
@@ -120,7 +120,7 @@ public class TestResults
 			)
 		);
 
-		var rates = await client.GetDailyAverageRatesAsync();
+		var rates = await client.GetDailyAverageRatesAsync([], TestContext.Current.CancellationToken);
 
 		Assert.Collection(
 			rates,
@@ -191,7 +191,7 @@ public class TestResults
 			)
 		);
 
-		var rates = await client.GetDailyAverageRatesAsync();
+		var rates = await client.GetDailyAverageRatesAsync([], TestContext.Current.CancellationToken);
 
 		Assert.Collection(
 			rates,
@@ -270,7 +270,7 @@ public class TestResults
 			)
 		);
 
-		var rates = await client.GetDailyAverageRatesAsync();
+		var rates = await client.GetDailyAverageRatesAsync([], TestContext.Current.CancellationToken);
 
 		Assert.Collection(
 			rates,
