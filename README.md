@@ -39,3 +39,11 @@ public class GoodController : ApiController
 
 * [ECB.Data.ExchangeRates API reference](./docs/ECB.Data.ExchangeRates.md)
 * [Official ECB Data Portal web services documentation](https://data.ecb.europa.eu/help/api)
+
+## Contributors
+
+<a href="https://github.com/maurizuki/ECB.Data.ExchangeRates/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=maurizuki/ECB.Data.ExchangeRates" />
+</a>
+
+Made with [contrib.rocks](https://contrib.rocks).
