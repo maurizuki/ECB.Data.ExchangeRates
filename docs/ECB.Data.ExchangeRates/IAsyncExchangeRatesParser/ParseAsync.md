@@ -1,6 +1,6 @@
 # IAsyncExchangeRatesParser.ParseAsync method
 
-Parses asynchronously the response of an HTTP request to ECB Data Portal web services.
+Asynchronously parses the response of an HTTP request to ECB Data Portal web services.
 
 ```csharp
 public Task<IEnumerable<ExchangeRate>> ParseAsync(Stream stream, 

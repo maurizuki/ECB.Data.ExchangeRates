@@ -1,6 +1,6 @@
 # ExchangeRatesParser.ParseAsync method
 
-Parses asynchronously the response of an HTTP request to ECB Data Portal web services.
+Asynchronously parses the response of an HTTP request to ECB Data Portal web services.
 
 ```csharp
 public Task<IEnumerable<ExchangeRate>> ParseAsync(Stream stream, 
@@ -21,7 +21,7 @@ A task that represents the asynchronous operation. The task result contains the 
 | exception | condition |
 | --- | --- |
 | OperationCanceledException | The cancellation token was canceled. |
-| XmlException | The response content does not contain a valid XML document or does not contain the namespace of prefix 'generic'. |
+| XmlException | The response content does not contain a valid XML document or does not contain the namespace associated with the prefix 'generic'. |
 
 ## See Also
 

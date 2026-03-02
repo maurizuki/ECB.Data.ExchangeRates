@@ -12,7 +12,7 @@ public class ExchangeRatesParser : IAsyncExchangeRatesParser, IExchangeRatesPars
 | --- | --- |
 | [ExchangeRatesParser](ExchangeRatesParser/ExchangeRatesParser.md)() | The default constructor. |
 | [Parse](ExchangeRatesParser/Parse.md)(…) | Parses the response of an HTTP request to ECB Data Portal web services. |
-| [ParseAsync](ExchangeRatesParser/ParseAsync.md)(…) | Parses asynchronously the response of an HTTP request to ECB Data Portal web services. |
+| [ParseAsync](ExchangeRatesParser/ParseAsync.md)(…) | Asynchronously parses the response of an HTTP request to ECB Data Portal web services. |
 | static [AsyncParser](ExchangeRatesParser/AsyncParser.md) { get; } | Gets an instance of the asynchronous parser. |
 | static [Parser](ExchangeRatesParser/Parser.md) { get; } | Gets an instance of the parser. |
 

@@ -10,7 +10,7 @@ public interface IAsyncExchangeRatesParser
 
 | name | description |
 | --- | --- |
-| [ParseAsync](IAsyncExchangeRatesParser/ParseAsync.md)(…) | Parses asynchronously the response of an HTTP request to ECB Data Portal web services. |
+| [ParseAsync](IAsyncExchangeRatesParser/ParseAsync.md)(…) | Asynchronously parses the response of an HTTP request to ECB Data Portal web services. |
 
 ## See Also
 

@@ -18,7 +18,7 @@ The currency exchange rates.
 
 | exception | condition |
 | --- | --- |
-| XmlException | The response content does not contain a valid XML document or does not contain the namespace of prefix 'generic'. |
+| XmlException | The response content does not contain a valid XML document or does not contain the namespace associated with the prefix 'generic'. |
 
 ## See Also
 

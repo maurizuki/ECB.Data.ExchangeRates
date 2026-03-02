@@ -186,7 +186,7 @@ public class ExchangeRatesClient : HttpClient
 	public async Task<IEnumerable<ExchangeRate>> GetDailyAverageRatesAsync(string[] currencies, CancellationToken cancellationToken)
 	{
 		if (currencies == null) throw new ArgumentNullException(nameof(currencies));
-		return await GetExchangeRatesAsync(MEASUREMENT_FREQUENCY_DAILY, currencies, "&lastNObservations=1", cancellationToken);
+		return await GetExchangeRatesAsync(MeasurementFrequencyDaily, currencies, "&lastNObservations=1", cancellationToken);
 	}
 
 	/// <summary>
@@ -297,8 +297,8 @@ public class ExchangeRatesClient : HttpClient
 #else
 		if (currencies == null) throw new ArgumentNullException(nameof(currencies));
 #endif
-		
-		return await GetExchangeRatesAsync(MEASUREMENT_FREQUENCY_DAILY, currencies, $"&startPeriod={startDate:yyyy-MM-dd}&endPeriod={endDate:yyyy-MM-dd}", cancellationToken);
+
+		return await GetExchangeRatesAsync(MeasurementFrequencyDaily, currencies, $"&startPeriod={startDate:yyyy-MM-dd}&endPeriod={endDate:yyyy-MM-dd}", cancellationToken);
 	}
 
 	/// <summary>
@@ -423,7 +423,7 @@ public class ExchangeRatesClient : HttpClient
 #else
 		if (currencies == null) throw new ArgumentNullException(nameof(currencies));
 #endif
-		return await GetExchangeRatesAsync(MEASUREMENT_FREQUENCY_MONTHLY, currencies, $"&startPeriod={startYear:D4}-{startMonth:D2}&endPeriod={endYear:D4}-{endMonth:D2}", cancellationToken);
+		return await GetExchangeRatesAsync(MeasurementFrequencyMonthly, currencies, $"&startPeriod={startYear:D4}-{startMonth:D2}&endPeriod={endYear:D4}-{endMonth:D2}", cancellationToken);
 	}
 
 	/// <summary>
@@ -534,18 +534,17 @@ public class ExchangeRatesClient : HttpClient
 #else
 		if (currencies == null) throw new ArgumentNullException(nameof(currencies));
 #endif
-		
-		return await GetExchangeRatesAsync(MEASUREMENT_FREQUENCY_ANNUAL, currencies, $"&startPeriod={startYear:D4}&endPeriod={endYear:D4}", cancellationToken);
+
+		return await GetExchangeRatesAsync(MeasurementFrequencyAnnual, currencies, $"&startPeriod={startYear:D4}&endPeriod={endYear:D4}", cancellationToken);
 	}
 
-	private const string MEASUREMENT_FREQUENCY_DAILY = "D";
-	private const string MEASUREMENT_FREQUENCY_MONTHLY = "M";
-	private const string MEASUREMENT_FREQUENCY_ANNUAL = "A";
+	private const string MeasurementFrequencyDaily = "D";
+	private const string MeasurementFrequencyMonthly = "M";
+	private const string MeasurementFrequencyAnnual = "A";
 
 	private async Task<IEnumerable<ExchangeRate>> GetExchangeRatesAsync(string frequency, string[] currencies, string parameters, CancellationToken cancellationToken)
 	{
 		var response = (await GetAsync($"{frequency}.{string.Join("+", currencies)}.EUR.SP00.A?detail=dataOnly{parameters}", HttpCompletionOption.ResponseHeadersRead, cancellationToken)).EnsureSuccessStatusCode();
-		// await using uses IAsyncDisposable instead of IDisposable
 #if NETSTANDARD2_1 || NET5_0_OR_GREATER
 		await
 #endif

@@ -33,30 +33,31 @@ namespace ECB.Data.ExchangeRates;
 /// </summary>
 public class ExchangeRatesParser : IExchangeRatesParser, IAsyncExchangeRatesParser
 {
-	private static readonly ExchangeRatesParser _parser = new();
+	private static readonly ExchangeRatesParser Instance = new();
 
 	/// <summary>
-	/// Gets an instance of the parser.
+	///     Gets an instance of the parser.
 	/// </summary>
 	/// <returns>An instance of the parser.</returns>
-	public static IExchangeRatesParser Parser => _parser;
+	public static IExchangeRatesParser Parser => Instance;
 
 	/// <summary>
-	/// Gets an instance of the asynchronous parser.
+	///     Gets an instance of the asynchronous parser.
 	/// </summary>
 	/// <returns>An instance of the asynchronous parser.</returns>
-	public static IAsyncExchangeRatesParser AsyncParser => _parser;
+	public static IAsyncExchangeRatesParser AsyncParser => Instance;
 
 	/// <summary>
 	///     Parses the response of an HTTP request to ECB Data
 	///     Portal web services.
 	/// </summary>
-	/// <param name="stream">The stream that contains the XML response to
-	///		parse.</param>
+	/// <param name="stream">
+	///     The stream that contains the XML response to parse.
+	/// </param>
 	/// <returns>The currency exchange rates.</returns>
 	/// <exception cref="XmlException">
 	///     The response content does not contain a valid XML document or
-	///     does not contain the namespace prefix 'generic'.
+	///     does not contain the namespace associated with the prefix 'generic'.
 	/// </exception>
 	public IEnumerable<ExchangeRate> Parse(Stream stream)
 	{
@@ -78,18 +79,23 @@ public class ExchangeRatesParser : IExchangeRatesParser, IAsyncExchangeRatesPars
 	///     Asynchronously parses the response of an HTTP request to ECB Data
 	///     Portal web services.
 	/// </summary>
-	/// <param name="stream">The stream that contains the XML response to
-	///		parse.</param>
-	/// <param name="cancellationToken">A cancellation token that can be
-	///		used to receive notice of cancellation.</param>
-	/// <returns>A task that represents the asynchronous operation.
-	///		The task result contains the currency exchange rates.</returns>
+	/// <param name="stream">
+	///     The stream that contains the XML response to parse.
+	/// </param>
+	/// <param name="cancellationToken">
+	///     A cancellation token that can be
+	///     used to receive notice of cancellation.
+	/// </param>
+	/// <returns>
+	///     A task that represents the asynchronous operation.
+	///     The task result contains the currency exchange rates.
+	/// </returns>
 	/// <exception cref="OperationCanceledException">
-	///		The cancellation token was canceled.
-	///	</exception>
+	///     The cancellation token was canceled.
+	/// </exception>
 	/// <exception cref="XmlException">
 	///     The response content does not contain a valid XML document or
-	///     does not contain the namespace prefix 'generic'.
+	///     does not contain the namespace associated with the prefix 'generic'.
 	/// </exception>
 	public async Task<IEnumerable<ExchangeRate>> ParseAsync(Stream stream, CancellationToken cancellationToken)
 	{
@@ -114,8 +120,9 @@ public class ExchangeRatesParser : IExchangeRatesParser, IAsyncExchangeRatesPars
 
 	private static IEnumerable<ExchangeRate> Parse(XDocument document)
 	{
-		var genericNamespace = document.Root?.GetNamespaceOfPrefix("generic")
-		                       ?? throw new XmlException("The namespace of the prefix 'generic' is missing.");
+		if (document.Root == null) throw new XmlException("The root element is missing.");
+		var genericNamespace = document.Root.GetNamespaceOfPrefix("generic")
+		                       ?? throw new XmlException("The namespace associated with the prefix 'generic' is missing.");
 
 		var seriesKeyValueName = XName.Get("Value", genericNamespace.NamespaceName);
 		var obsName = XName.Get("Obs", genericNamespace.NamespaceName);
@@ -128,7 +135,8 @@ public class ExchangeRatesParser : IExchangeRatesParser, IAsyncExchangeRatesPars
 				{
 					var seriesKeyValues = a.Descendants(seriesKeyValueName)
 						.ToDictionary(
-							b => b.Attribute("id")?.Value ?? throw new ArgumentException("Cannot find series key."),
+							b => b.Attribute("id")?.Value
+							     ?? throw new XmlException("The attribute 'id' of an element 'Value' of a series key is missing."),
 							b => b.Attribute("value")?.Value
 						);
 					return new
