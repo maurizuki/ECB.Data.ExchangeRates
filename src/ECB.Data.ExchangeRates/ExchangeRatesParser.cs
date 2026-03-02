@@ -56,7 +56,7 @@ public class ExchangeRatesParser : IExchangeRatesParser, IAsyncExchangeRatesPars
 	/// <returns>The currency exchange rates.</returns>
 	/// <exception cref="XmlException">
 	///     The response content does not contain a valid XML document or
-	///     does not contain the namespace of prefix 'generic'.
+	///     does not contain the namespace prefix 'generic'.
 	/// </exception>
 	public IEnumerable<ExchangeRate> Parse(Stream stream)
 	{
@@ -75,7 +75,7 @@ public class ExchangeRatesParser : IExchangeRatesParser, IAsyncExchangeRatesPars
 	}
 
 	/// <summary>
-	///     Parses asynchronously the response of an HTTP request to ECB Data
+	///     Asynchronously parses the response of an HTTP request to ECB Data
 	///     Portal web services.
 	/// </summary>
 	/// <param name="stream">The stream that contains the XML response to
@@ -89,11 +89,11 @@ public class ExchangeRatesParser : IExchangeRatesParser, IAsyncExchangeRatesPars
 	///	</exception>
 	/// <exception cref="XmlException">
 	///     The response content does not contain a valid XML document or
-	///     does not contain the namespace of prefix 'generic'.
+	///     does not contain the namespace prefix 'generic'.
 	/// </exception>
 	public async Task<IEnumerable<ExchangeRate>> ParseAsync(Stream stream, CancellationToken cancellationToken)
 	{
-#if NETSTANDARD2_1_OR_GREATER
+#if NETSTANDARD2_1 || NET5_0_OR_GREATER
 		XDocument document;
 		try
 		{
@@ -114,8 +114,8 @@ public class ExchangeRatesParser : IExchangeRatesParser, IAsyncExchangeRatesPars
 
 	private static IEnumerable<ExchangeRate> Parse(XDocument document)
 	{
-		var genericNamespace = document.Root!.GetNamespaceOfPrefix("generic")
-			?? throw new XmlException("Namespace of prefix 'generic' is missing.");
+		var genericNamespace = document.Root?.GetNamespaceOfPrefix("generic")
+		                       ?? throw new XmlException("The namespace of the prefix 'generic' is missing.");
 
 		var seriesKeyValueName = XName.Get("Value", genericNamespace.NamespaceName);
 		var obsName = XName.Get("Obs", genericNamespace.NamespaceName);
@@ -128,7 +128,7 @@ public class ExchangeRatesParser : IExchangeRatesParser, IAsyncExchangeRatesPars
 				{
 					var seriesKeyValues = a.Descendants(seriesKeyValueName)
 						.ToDictionary(
-							b => b.Attribute("id")!.Value,
+							b => b.Attribute("id")?.Value ?? throw new ArgumentException("Cannot find series key."),
 							b => b.Attribute("value")?.Value
 						);
 					return new
@@ -172,7 +172,7 @@ public class ExchangeRatesParser : IExchangeRatesParser, IAsyncExchangeRatesPars
 	}
 }
 
-#if !NETSTANDARD2_1_OR_GREATER
+#if !NETSTANDARD2_1 && !NET5_0_OR_GREATER
 internal static class Extensions
 {
 	public static TValue? GetValueOrDefault<TKey, TValue>(this IReadOnlyDictionary<TKey, TValue> dictionary, TKey key)
