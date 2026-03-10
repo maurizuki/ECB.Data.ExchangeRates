@@ -1,7 +1,6 @@
 # ECB.Data.ExchangeRates
 
 [![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/maurizuki/ECB.Data.ExchangeRates/build.yml)](https://github.com/maurizuki/ECB.Data.ExchangeRates/actions/workflows/build.yml)
-[![issues](https://img.shields.io/github/issues/maurizuki/ECB.Data.ExchangeRates)](https://github.com/maurizuki/ECB.Data.ExchangeRates/issues)
 [![Nuget](https://img.shields.io/nuget/v/ECB.Data.ExchangeRates)](https://www.nuget.org/packages/ECB.Data.ExchangeRates)
 [![Nuget](https://img.shields.io/nuget/dt/ECB.Data.ExchangeRates)](https://www.nuget.org/packages/ECB.Data.ExchangeRates)
 
