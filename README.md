@@ -8,13 +8,13 @@ Provides access to the EXR Dataflow (currency exchange rates) of [ECB Data Porta
 
 ## Getting started
 
-To add ECB.Data.ExchangeRates to your project, you can use the following NuGet Package Manager command:
+Use the following command to add the package to a .NET project:
 
 ```PowerShell
-Install-Package ECB.Data.ExchangeRates
+dotnet add package ECB.Data.ExchangeRates
 ```
 
-More options are available on the [ECB.Data.ExchangeRates page](https://www.nuget.org/packages/ECB.Data.ExchangeRates) of the NuGet Gallery website.
+More options are available on the [package page](https://www.nuget.org/packages/ECB.Data.ExchangeRates) of the NuGet Gallery website.
 
 The console application [ECB.Data.ExchangeRates.ConsoleApp](./src/ECB.Data.ExchangeRates.ConsoleApp) (ECBEXR.exe) is intended as an example on how to use the web services client in a real scenario.
 
@@ -32,6 +32,13 @@ public class GoodController : ApiController
         ExchangeRatesClient = new ExchangeRatesClient();
     }
 }
+```
+## Build and pack
+
+Use the following command to build the source code and create the package to be released:
+
+```PowerShell
+dotnet pack -c Release --include-symbols --include-source
 ```
 
 ## Documentation
