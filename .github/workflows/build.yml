@@ -25,4 +25,4 @@ jobs:
     - name: Build
       run: dotnet build --no-restore src/ECB.Data.ExchangeRates.Tests/ECB.Data.ExchangeRates.Tests.csproj
     - name: Test
-      run: dotnet test --no-build --verbosity normal src/ECB.Data.ExchangeRates.Tests/ECB.Data.ExchangeRates.Tests.csproj
+      run: dotnet run --no-build --project src/ECB.Data.ExchangeRates.Tests/ECB.Data.ExchangeRates.Tests.csproj
