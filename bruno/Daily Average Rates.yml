@@ -1,0 +1,40 @@
+info:
+  name: Daily Average Rates
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{baseUri}}/D.{{currencies}}.EUR.SP00.A?detail=dataOnly&lastNObservations=1"
+  params:
+    - name: detail
+      value: dataOnly
+      type: query
+      description: The amount of detail included (full|dataonly|serieskeysonly|nodata)
+    - name: lastNObservations
+      value: "1"
+      type: query
+      description: The max number of observations to be returned counting back from the most recent
+    - name: startPeriod
+      value: 2020-01-01
+      type: query
+      description: The start of the date range for which observations are to be returned (YYYY-MM-DD)
+      disabled: true
+    - name: endPeriod
+      value: 2020-12-31
+      type: query
+      description: The end of the date range for which observations are to be returned (YYYY-MM-DD)
+      disabled: true
+
+runtime:
+  variables:
+    - name: currencies
+      value: USD+GBP
+      description: The currencies whose exchange rates against the Euro are requested (plus sign separated)
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true

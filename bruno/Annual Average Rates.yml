@@ -1,0 +1,34 @@
+info:
+  name: Annual Average Rates
+  type: http
+  seq: 4
+
+http:
+  method: GET
+  url: "{{baseUri}}/A.{{currencies}}.EUR.SP00.A?detail=dataOnly&startPeriod=2010&endPeriod=2020"
+  params:
+    - name: detail
+      value: dataOnly
+      type: query
+      description: The amount of detail included (full|dataonly|serieskeysonly|nodata)
+    - name: startPeriod
+      value: "2010"
+      type: query
+      description: The start of the date range for which observations are to be returned (YYYY)
+    - name: endPeriod
+      value: "2020"
+      type: query
+      description: The end of the date range for which observations are to be returned (YYYY)
+
+runtime:
+  variables:
+    - name: currencies
+      value: USD+GBP
+      description: The currencies whose exchange rates against the Euro are requested (plus sign separated)
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: true

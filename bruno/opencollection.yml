@@ -1,0 +1,34 @@
+opencollection: 1.0.0
+
+info:
+  name: ECB Exchange Rates
+  version: v2.1
+config:
+  proxy:
+    inherit: true
+    config:
+      protocol: http
+      hostname: ""
+      port: ""
+      auth:
+        username: ""
+        password: ""
+      bypassProxy: ""
+
+request:
+  headers:
+    - name: Accept
+      value: application/vnd.sdmx.genericdata+xml;version=2.1
+  variables:
+    - name: baseUri
+      value: https://data-api.ecb.europa.eu/service/data/EXR
+
+docs:
+  content: "[Official ECB Data Portal web services documentation](https://data.ecb.europa.eu/help/api)"
+  type: text/markdown
+bundled: false
+extensions:
+  bruno:
+    ignore:
+      - node_modules
+      - .git
